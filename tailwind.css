@@ -1,0 +1,68 @@
+.absolute {
+  position: absolute
+}
+
+.bottom-0 {
+  bottom: 0px
+}
+
+.flex {
+  display: flex
+}
+
+.hidden {
+  display: none
+}
+
+.h-full {
+  height: 100%
+}
+
+.h-64 {
+  height: 16rem
+}
+
+.w-full {
+  width: 100%
+}
+
+.w-64 {
+  width: 16rem
+}
+
+.flex-row {
+  flex-direction: row
+}
+
+.flex-col {
+  flex-direction: column
+}
+
+.items-center {
+  align-items: center
+}
+
+.justify-center {
+  justify-content: center
+}
+
+.rounded-full {
+  border-radius: 9999px
+}
+
+.border-2 {
+  border-width: 2px
+}
+
+.bg-red-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 202 202 / var(--tw-bg-opacity))
+}
+
+.p-4 {
+  padding: 1rem
+}
+
+.p-2 {
+  padding: 0.5rem
+}
