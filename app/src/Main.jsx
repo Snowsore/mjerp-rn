@@ -21,32 +21,24 @@ export default function Main() {
     <NavigationContainer>
       <StatusBar hidden={true} />
       <Stack.Navigator>
-        <Stack.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            //
-          />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-        </Stack.Group>
-        <Stack.Screen
-          name="Scan"
-          component={ScanScreen}
-          options={{
+        <Stack.Group
+          screenOptions={{
             headerShown: false,
+            ...TransitionPresets.SlideFromRightIOS,
           }}
-        />
-        <Stack.Group screenOptions={{ presentation: "modal" }}>
-          <Stack.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={
-              {
-                // headerShown: false,
-                // ...TransitionPresets.ModalPresentationIOS,
-              }
-            }
-          />
+        >
+          <Stack.Screen name="Home" component={HomeScreen} />
+        </Stack.Group>
+        <Stack.Group screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Scan" component={ScanScreen} />
+        </Stack.Group>
+        <Stack.Group
+          screenOptions={{
+            headerShown: false,
+            ...TransitionPresets.ModalPresentationIOS,
+          }}
+        >
+          <Stack.Screen name="Settings" component={SettingsScreen} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
