@@ -1,31 +1,27 @@
 // MeiJin-Reactnative Input
 
 import React from "react";
-import { View, StyleSheet, Button as NativeButton } from "react-native";
+import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
 export default function Button(props) {
   return (
-    <View style={styles.container}>
-      <NativeButton style={styles.label} title={props.title} />
-    </View>
+    <TouchableOpacity style={styles.container}>
+      <Text style={styles.text}>{props.title}</Text>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-  },
-  label: {
-    position: "absolute",
-    marginLeft: 20,
-    paddingHorizontal: 8,
-    backgroundColor: "#fff",
-  },
-  textContainer: {
-    margin: 8,
-    padding: 10,
+    width: "100%",
+    height: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
     borderWidth: 1,
-    justifyContent: "space-between",
+    backgroundColor: "#ccc",
   },
-  input: {},
+  text: {
+    fontSize: 30,
+  },
 });

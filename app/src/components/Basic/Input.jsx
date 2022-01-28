@@ -21,7 +21,11 @@ export default function Input(props) {
     <TouchableWithoutFeedback onPress={onPressHandler}>
       <View style={styles.container}>
         <View style={styles.inputContainer}>
-          <TextInput style={styles.input} ref={inputRef} type={props.type} />
+          <TextInput
+            style={styles.input}
+            ref={inputRef}
+            secureTextEntry={props.type === "password"}
+          />
         </View>
         <Text style={styles.label}>{props.title}</Text>
       </View>

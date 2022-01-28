@@ -13,7 +13,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 export default function HomeScreen({ navigation }) {
   return (
-    <Tab.Navigator backBehavior="none">
+    <Tab.Navigator backBehavior="none" initialRouteName="Profile">
       <Tab.Screen
         name="Welcome"
         component={AnnounceScreen}
@@ -48,7 +48,7 @@ export default function HomeScreen({ navigation }) {
       />
       <Tab.Screen
         name="Profile"
-        component={WelcomeScreen}
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />

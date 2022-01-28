@@ -12,6 +12,7 @@ import ProfileScreen from "./pages/ProfileScreen";
 import ScanScreen from "./pages/ScanScreen";
 import SettingsScreen from "./pages/SettingsScreen";
 import ProductionScreen from "./pages/ProductionScreen";
+import LoginScreen from "./pages/LoginScreen";
 
 import { TouchableOpacity, Text, View, StyleSheet, Button } from "react-native";
 
@@ -43,6 +44,7 @@ export default function Main() {
         >
           <Stack.Screen name="Production" component={ProductionScreen} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
