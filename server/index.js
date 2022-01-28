@@ -6,7 +6,28 @@ app.get("/", (req, res) => {
 });
 
 app.get("/announce", (req, res) => {
-  res.json([{ title: "big", context: "good" }]);
+  res.json([
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+    { title: "big", context: "good" },
+  ]);
 });
 
 app.listen(8080, () => {

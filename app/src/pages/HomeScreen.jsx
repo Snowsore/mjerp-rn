@@ -1,71 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, View, StyleSheet, Button } from "react-native";
-import { useTailwind } from "tailwind-rn";
 
-import {
-  createStackNavigator,
-  TransitionPresets,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const Tab = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 import AnnounceScreen from "./AnnounceScreen";
 import WelcomeScreen from "./WelcomeScreen";
 import ProfileScreen from "./ProfileScreen";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function HomeScreen({ navigation }) {
-  const tailwind = useTailwind();
-
   return (
-    <View style={tailwind("w-full h-full")}>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          animationEnabled: false,
+    <Tab.Navigator backBehavior="none">
+      <Tab.Screen
+        name="Welcome"
+        component={AnnounceScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
         }}
-      >
-        <Tab.Screen name="Welcome" component={AnnounceScreen} />
-        <Tab.Screen name="Profile" component={WelcomeScreen} />
-        <Tab.Screen name="A" component={WelcomeScreen} />
-        <Tab.Screen name="C" component={WelcomeScreen} />
-        <Tab.Screen name="F" component={WelcomeScreen} />
-      </Tab.Navigator>
-      <View style={tailwind("w-full absolute bottom-0")}>
-        <View
-          style={tailwind(
-            "w-full p-2 border-2 flex-row items-center justify-center"
-          )}
-        >
-          <TouchableOpacity
-            onPress={(e) => navigation.navigate("Welcome", { name: "Welcome" })}
-          >
-            <Text style={tailwind("border-2 p-2")}>Welcome</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={(e) => navigation.navigate("A", { name: "A" })}
-          >
-            <Text style={tailwind("border-2 p-2")}>A</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={(e) => navigation.navigate("F", { name: "F" })}
-          >
-            <Text style={tailwind("border-2 p-2")}>F</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={(e) => navigation.push("Scan", { name: "Jane" })}
-          >
-            <Text style={tailwind("border-2 p-2")}>Scan</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={(e) => navigation.push("Settings", { name: "Jane" })}
-          >
-            <Text style={tailwind("border-2 p-2")}>Setting</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={tailwind("border-2 p-2")}>Goood</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
+      />
+      <Tab.Screen
+        name="Scan"
+        component={WelcomeScreen}
+        options={{
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color, size }) => (
+            <View>
+              <MaterialCommunityIcons
+                name="qrcode-scan"
+                color={color}
+                size={35}
+              />
+            </View>
+          ),
+          tabBarOptions: { showLabel: false },
+        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.push("Scan");
+          },
+        })}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={WelcomeScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  scanButton: {
+    padding: 1,
+    borderRadius: 5,
+  },
+});

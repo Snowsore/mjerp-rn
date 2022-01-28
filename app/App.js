@@ -1,14 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { TailwindProvider } from "tailwind-rn";
-import { NavigationContainer } from "@react-navigation/native";
-import utilities from "./tailwind.json";
+import React from "react";
 
 import Main from "./src/Main";
 
 export default function App() {
-  return (
-    <TailwindProvider utilities={utilities}>
-      <Main />
-    </TailwindProvider>
-  );
+  return <Main />;
 }

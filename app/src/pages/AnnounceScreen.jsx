@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
-import { useTailwind } from "tailwind-rn";
+import { Text, View, StyleSheet, Button, ScrollView } from "react-native";
 
 import api from "@/api";
 
 export default function AnnounceScreen(props) {
-  const tailwind = useTailwind();
   const [announceList, setAnnounceList] = React.useState([]);
 
-  api.getAnnounce().then((list) => {
-    setAnnounceList(list);
-  });
+  React.useEffect(() => {
+    api.getAnnounce().then((list) => {
+      setAnnounceList(list);
+    });
+  }, []);
 
   return (
-    <View style={tailwind("flex flex-col gap-4")}>
-      {announceList.map((announce) => (
-        <Announce>
+    <ScrollView>
+      {announceList.map((announce, index) => (
+        <Announce key={`announce_${index}`}>
           <Announce.Title>{announce.title}</Announce.Title>
           <Announce.Context>{announce.context}</Announce.Context>
         </Announce>
       ))}
-    </View>
+    </ScrollView>
   );
 }
 
 function Announce({ children }) {
-  return <View>{children}</View>;
+  return <View style={styles.announceContainer}>{children}</View>;
 }
 
 function Title({ children }) {
@@ -38,3 +38,10 @@ function Context({ children }) {
 
 Announce.Title = Title;
 Announce.Context = Context;
+
+const styles = StyleSheet.create({
+  announceContainer: {
+    margin: 2,
+    borderWidth: 2,
+  },
+});

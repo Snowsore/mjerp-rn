@@ -1,4 +1,4 @@
-const host = "http://192.168.1.10";
+const host = "http://192.168.1.10:8080";
 
 export default {
   async getAnnounce() {

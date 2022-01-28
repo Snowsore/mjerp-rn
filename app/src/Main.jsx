@@ -11,6 +11,7 @@ import HomeScreen from "./pages/HomeScreen";
 import ProfileScreen from "./pages/ProfileScreen";
 import ScanScreen from "./pages/ScanScreen";
 import SettingsScreen from "./pages/SettingsScreen";
+import ProductionScreen from "./pages/ProductionScreen";
 
 import { TouchableOpacity, Text, View, StyleSheet, Button } from "react-native";
 
@@ -19,8 +20,7 @@ const Stack = createStackNavigator();
 export default function Main() {
   return (
     <NavigationContainer>
-      <StatusBar hidden={true} />
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Group
           screenOptions={{
             headerShown: false,
@@ -34,10 +34,14 @@ export default function Main() {
         </Stack.Group>
         <Stack.Group
           screenOptions={{
-            headerShown: false,
-            ...TransitionPresets.ModalPresentationIOS,
+            headerStyle: {
+              backgroundColor: "#333",
+            },
+            headerTintColor: "#fff",
+            ...TransitionPresets.SlideFromRightIOS,
           }}
         >
+          <Stack.Screen name="Production" component={ProductionScreen} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
         </Stack.Group>
       </Stack.Navigator>
