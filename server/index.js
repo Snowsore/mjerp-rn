@@ -6,30 +6,14 @@ app.get("/", (req, res) => {
 });
 
 app.get("/announce", (req, res) => {
-  res.json([
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-    { title: "big", context: "good" },
-  ]);
+  res.json(
+    [...Array(100)].map((x) => ({
+      title: "Title: : " + Math.random().toString(36),
+      context: Math.random().toString(36),
+    }))
+  );
 });
 
 app.listen(8080, () => {
-  console.log("Server start at 80");
+  console.log("Server start at 8080");
 });

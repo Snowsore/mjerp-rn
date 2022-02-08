@@ -7,14 +7,10 @@ import {
 } from "@react-navigation/stack";
 import "react-native-gesture-handler";
 
-import HomeScreen from "./pages/HomeScreen";
-import ProfileScreen from "./pages/ProfileScreen";
-import ScanScreen from "./pages/ScanScreen";
-import SettingsScreen from "./pages/SettingsScreen";
-import ProductionScreen from "./pages/ProductionScreen";
-import LoginScreen from "./pages/LoginScreen";
-
-import { TouchableOpacity, Text, View, StyleSheet, Button } from "react-native";
+import Home from "./pages/Home";
+import Scan from "./pages/Scan";
+import Login from "./pages/Login";
+import Production from "./pages/Production";
 
 const Stack = createStackNavigator();
 
@@ -28,23 +24,17 @@ export default function Main() {
             ...TransitionPresets.SlideFromRightIOS,
           }}
         >
-          <Stack.Screen name="Home" component={HomeScreen} />
-        </Stack.Group>
-        <Stack.Group screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Scan" component={ScanScreen} />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Production" component={Production} />
         </Stack.Group>
         <Stack.Group
           screenOptions={{
-            headerStyle: {
-              backgroundColor: "#333",
-            },
-            headerTintColor: "#fff",
+            headerShown: false,
             ...TransitionPresets.SlideFromRightIOS,
           }}
         >
-          <Stack.Screen name="Production" component={ProductionScreen} />
-          <Stack.Screen name="Settings" component={SettingsScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Scan" component={Scan} />
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

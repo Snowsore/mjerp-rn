@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { Input, Button } from "@/components/Basic";
 
-export default function ProfileScreen(props) {
+export default function Production(props) {
   const params = props.route.params
     ? props.route.params
     : { data: "hellow", title: "生产计划：XYZ0203" };

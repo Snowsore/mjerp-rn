@@ -14,7 +14,8 @@ export default function Button(props) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: 60,
+    height: 48,
+    marginVertical: 8,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 4,
@@ -22,6 +23,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
   },
   text: {
-    fontSize: 30,
+    fontSize: 28,
   },
 });

@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { TouchableOpacity, Text, View, StyleSheet, Button } from "react-native";
 
-import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import AnnounceScreen from "./AnnounceScreen";
+import ProfileScreen from "./ProfileScreen";
+
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();
 
-import AnnounceScreen from "./AnnounceScreen";
-import WelcomeScreen from "./WelcomeScreen";
-import ProfileScreen from "./ProfileScreen";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-export default function HomeScreen({ navigation }) {
+export default function Home({ navigation }) {
   return (
     <Tab.Navigator backBehavior="none" initialRouteName="Profile">
       <Tab.Screen
@@ -25,7 +24,7 @@ export default function HomeScreen({ navigation }) {
       />
       <Tab.Screen
         name="Scan"
-        component={WelcomeScreen}
+        component={AnnounceScreen}
         options={{
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size }) => (
