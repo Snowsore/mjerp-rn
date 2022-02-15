@@ -17,7 +17,7 @@ const Stack = createStackNavigator();
 export default function Main() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Production">
         <Stack.Group
           screenOptions={{
             headerShown: false,
