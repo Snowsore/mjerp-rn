@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button, ScrollView } from "react-native";
 
-import api from "@/api";
+import api from "@/js/api";
 
 export default function AnnounceScreen(props) {
   const [announceList, setAnnounceList] = React.useState([]);
