@@ -31,7 +31,7 @@ export default function Infos(props) {
       backgroundColor: "#eee",
     },
     infos: {
-      paddingVertical: 8,
+      padding: 8,
     },
   };
 
@@ -54,14 +54,11 @@ export default function Infos(props) {
 
 const MenuInfo = (props) => {
   const worker = props.worker ? props.worker : "";
-  const date = props.date
-    ? dateFormat(props.date, "yyyy/mm/dd HH:MM dddd")
-    : "";
+  const date = props.date ? dateFormat(props.date, "mm/dd HH:MM dddd") : "";
   const type = props.type ? props.type : "";
   const number = props.number ? props.number : "";
   const fail = props.fail ? props.fail : "";
   const machine = props.machine ? props.machine : "";
-  const inspector = props.inspector ? props.inspector : "";
   const comment = props.comment ? props.comment : "";
 
   const onPress = () => {
@@ -71,77 +68,32 @@ const MenuInfo = (props) => {
   const styles = {
     info: {
       flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-around",
       marginBottom: 10,
       borderRadius: 10,
       backgroundColor: "#fff",
-      paddingHorizontal: 8,
-      paddingVertical: 12,
-      marginHorizontal: 8,
+      padding: 8,
       marginBottom: 8,
-    },
-    icon: {
-      marginRight: 4,
-    },
-    type: {},
-    typeCircle: {
-      width: 80,
-      height: 80,
-      borderRadius: 50,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "#eee",
+      elevation: 4,
     },
     col: {
+      flex: 4,
       paddingHorizontal: 10,
-      flexGrow: 1,
     },
-    worker: {},
     date: { color: "#555" },
-    type: {
-      fontSize: 22,
-      fontWeight: "bold",
-    },
-    number: {
-      textAlign: "center",
-      width: 40,
-      borderRadius: 10,
-      padding: 2,
-      backgroundColor: "#8ca",
-      marginRight: 8,
-    },
-    fail: {
-      textAlign: "center",
-      width: 40,
-      borderRadius: 10,
-      padding: 2,
-      backgroundColor: "#c8a",
-      marginRight: 8,
-    },
-    machine: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingHorizontal: 8,
-      borderWidth: 1,
-      marginRight: 8,
-    },
-    machineText: { marginLeft: 4 },
     nameRow: {
+      height: 24,
       alignItems: "center",
       flexDirection: "row",
       justifyContent: "space-between",
     },
-    dataRow: {
-      paddingVertical: 8,
+    statRow: {
+      height: 24,
       alignItems: "center",
       flexDirection: "row",
+      flexGrow: 1,
     },
-    commentRow: {
-      borderRadius: 8,
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    inspector: { paddingHorizontal: 4 },
-    comment: {},
   };
 
   const Worker = (
@@ -151,44 +103,112 @@ const MenuInfo = (props) => {
   );
   const Date = <Text style={styles.date}>{date}</Text>;
   const Machine = (
-    <View style={styles.machine}>
+    <Badge template="wire">
       <MaterialCommunityIcons name="cogs" size={14} />
-      <Text style={styles.machineText}>{machine}</Text>
-    </View>
+      <Text>{machine}</Text>
+    </Badge>
   );
-  const Number = <Text style={styles.number}>{number}</Text>;
-  const Fail = <Text style={styles.fail}>{fail}</Text>;
+  const Number = (
+    <Badge template="green">
+      <Text>{number}</Text>
+    </Badge>
+  );
+  const Fail = (
+    <Badge template="red">
+      <Text>{fail}</Text>
+    </Badge>
+  );
   const Comment = (
-    <View style={styles.commentRow}>
-      <MaterialCommunityIcons name="clipboard-check-outline" size={18} />
-      <Text style={styles.inspector}>{inspector}</Text>
-      <Text style={styles.comment}>{comment}</Text>
-    </View>
+    <MaterialCommunityIcons name="clipboard-check-outline" size={26} />
   );
+
+  const isEmpty = (str) => {
+    return str.length == 0;
+  };
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View>
-        <View style={styles.info}>
-          <View style={styles.type}>
-            <View style={styles.typeCircle}>
-              <Text style={styles.type}>{type}</Text>
-            </View>
+      <View style={styles.info}>
+        <Icon>{type}</Icon>
+        <View style={styles.col}>
+          <View style={styles.nameRow}>
+            {Worker}
+            {Date}
           </View>
-          <View style={styles.col}>
-            <View style={styles.nameRow}>
-              {Worker}
-              {Date}
+          <View style={{ flexDirection: "row" }}>
+            <View style={styles.statRow}>
+              {!isEmpty(machine) && Machine}
+              {!isEmpty(number) && Number}
+              {!isEmpty(fail) && Fail}
             </View>
-            <View style={styles.dataRow}>
-              {machine != "" && Machine}
-              {number != "" && Number}
-              {fail != "" && Fail}
-            </View>
-            {comment != "" && Comment}
+            <View>{!isEmpty(comment) && Comment}</View>
           </View>
         </View>
       </View>
     </TouchableWithoutFeedback>
+  );
+};
+
+const Icon = (props) => {
+  const text = props.children;
+
+  const styles = StyleSheet.create({
+    container: {
+      height: 46,
+      flex: 1,
+      borderRadius: 4,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#eee",
+    },
+    text: {
+      fontSize: 16,
+      fontWeight: "bold",
+    },
+  });
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>{text}</Text>
+    </View>
+  );
+};
+
+const Badge = (props) => {
+  const styles = StyleSheet.create({
+    container: {
+      height: 24,
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "row",
+      marginRight: 8,
+      paddingHorizontal: 4,
+    },
+    wire: { borderWidth: 1 },
+    green: { backgroundColor: "#8ca" },
+    red: { backgroundColor: "#c8a" },
+  });
+
+  const color = styles[props.template] ? styles[props.template] : {};
+
+  return (
+    <View style={{ ...styles.container, ...color }}>{props.children}</View>
+  );
+};
+
+const Status = (props) => {
+  return (
+    <View style={styles.col}>
+      <View style={styles.nameRow}>
+        {Worker}
+        {Date}
+      </View>
+      <View style={styles.dataRow}>
+        {machine != "" && Machine}
+        {number != "" && Number}
+        {fail != "" && Fail}
+        {comment != "" && Comment}
+      </View>
+    </View>
   );
 };

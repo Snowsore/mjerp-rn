@@ -2,11 +2,12 @@
   "name": "mjerp-rn",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject",
+    "build:android": "expo build:android -t apk",
     "build:tailwind": "tailwindcss --input input.css --output tailwind.css --no-autoprefixer && tailwind-rn",
     "dev:tailwind": "concurrently \"tailwindcss --input input.css --output tailwind.css --no-autoprefixer --watch\" \"tailwind-rn --watch\""
   },
@@ -30,7 +31,6 @@
     "react-native-gesture-handler": "~2.1.0",
     "react-native-paper": "^4.11.2",
     "react-native-safe-area-context": "3.3.2",
-    "react-native-screens": "~3.10.1",
     "react-native-vector-icons": "^9.0.0",
     "react-native-web": "0.17.1",
     "react-navigation-stack": "^2.10.4"
