@@ -13,12 +13,8 @@ import dateFormat from "@/js/dateformat";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { productInfoList } from "./data";
-
 export default function Info(props) {
-  const params = props.route.params
-    ? props.route.params
-    : { info: productInfoList[0] };
+  const params = props.route.params;
   const worker = params.info.worker;
   const type = params.info.type;
   const date = dateFormat(params.info.date, "yyyy/mm/dd HH:MM dddd");
@@ -30,7 +26,6 @@ export default function Info(props) {
 
   useEffect(() => {
     props.navigation.setOptions({
-      headerShown: true,
       title: `${params.pid} - ${params.info.type}`,
     });
   }, []);
@@ -46,63 +41,74 @@ export default function Info(props) {
       borderWidth: 1,
       backgroundColor: "#fff",
     },
-    card: {
-      height: 60,
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    underLine: {
-      borderBottomWidth: 1,
-    },
   });
 
-  console.log(params.info);
+  const baseStats = (
+    <View style={styles.session}>
+      <Item title="型号" value={type} noLine />
+    </View>
+  );
+
+  const inspecStats = inspector ? (
+    <View style={styles.session}>
+      <Item title="审批人" value={inspector} />
+      <Item
+        title="留言"
+        value={comment}
+        onPress={() => props.navigation.navigate("Worker")}
+        noLine
+      />
+    </View>
+  ) : (
+    worker && (
+      <View>
+        <Text>未审批，请审批</Text>
+        <Button title="审批" />
+      </View>
+    )
+  );
+
+  const onChangeNumber = (value) => {};
+
+  const workStats = worker ? (
+    <View style={styles.session}>
+      <Item title="生产人" value={worker} />
+      <Item
+        title="生产日期"
+        value={date}
+        onPress={() => props.navigation.navigate("Worker")}
+      />
+      <Item
+        title="车间编号"
+        value={machine}
+        onPress={() => props.navigation.navigate("Worker")}
+      />
+      <Item
+        title="生产数量"
+        value={number}
+        onPress={() =>
+          props.navigation.navigate("Worker", { onChange: onChangeNumber })
+        }
+      />
+      <Item
+        title="不良数量"
+        value={fail}
+        onPress={() => props.navigation.navigate("Worker")}
+        noLine
+      />
+    </View>
+  ) : (
+    <View>
+      <Text>没有生产信息，请添加</Text>
+      <Button title="添加" onPress={() => props.navigation.navigate("Form")} />
+    </View>
+  );
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.session}>
-        <Item title="生产人" value={worker} />
-        <Item title="型号" value={type} noLine />
-      </View>
-      <View style={styles.session}>
-        <Item
-          title="生产日期"
-          value={date}
-          onPress={() => props.navigation.navigate("Worker")}
-        />
-        <Item
-          title="车间编号"
-          value={machine}
-          onPress={() => props.navigation.navigate("Worker")}
-        />
-        <Item
-          title="生产数量"
-          value={number}
-          onPress={() => props.navigation.navigate("Worker")}
-        />
-        <Item
-          title="不良数量"
-          value={fail}
-          onPress={() => props.navigation.navigate("Worker")}
-          noLine
-        />
-      </View>
-      {inspector ? (
-        <View style={styles.session}>
-          <Item title="审批人" value={inspector} />
-          <Item
-            title="留言"
-            value={comment}
-            onPress={() => props.navigation.navigate("Worker")}
-            noLine
-          />
-        </View>
-      ) : (
-        <View>
-          <Text>未审批，请审批</Text>
-          <Button title="审批" />
-        </View>
-      )}
+      {baseStats}
+      {workStats}
+      {inspecStats}
     </ScrollView>
   );
 }
