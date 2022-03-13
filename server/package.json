@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "express": "^4.17.2",
+    "query-string": "^7.1.1",
     "tailwind-rn": "^4.0.0"
   },
   "name": "server",
@@ -12,6 +13,5 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
-  "devDependencies": {}
+  "description": ""
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   ScrollView,
@@ -7,22 +7,24 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import { productInfoList } from "./data";
-
 import dateFormat from "@/js/dateformat";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function Infos(props) {
-  const params = props.route.params
-    ? props.route.params
-    : { data: "hellow", title: "单号：22011531/01" };
-  const data = params.data;
+import api from "@/js/api";
 
-  React.useEffect(() => {
+export default function Infos(props) {
+  const [infos, setInfos] = useState([]);
+
+  const params = props.route.params;
+  const pid = params ? params.pid : "2201153101";
+
+  useEffect(async () => {
+    const infos = await api.getProductInfos(pid);
+    setInfos(infos);
+
     props.navigation.setOptions({
-      headerShown: true,
-      title: params.title,
+      title: `单号：${pid}`,
     });
   }, []);
 
@@ -35,11 +37,11 @@ export default function Infos(props) {
     },
   };
 
-  const productInfoListComps = productInfoList.map((info, index) => (
+  const productInfoListComps = infos.map((info, index) => (
     <MenuInfo
       key={`info_${index}`}
       onPress={() =>
-        props.navigation.push("Info", { pid: "单号：22011531/01", info })
+        props.navigation.push("Info", { pid, index, info: infos[index] })
       }
       {...info}
     />
@@ -83,7 +85,6 @@ const MenuInfo = (props) => {
     },
     date: { color: "#555" },
     nameRow: {
-      height: 24,
       alignItems: "center",
       flexDirection: "row",
       justifyContent: "space-between",
@@ -96,29 +97,12 @@ const MenuInfo = (props) => {
     },
   };
 
-  const Worker = (
-    <View style={styles.commentRow}>
-      <Text style={styles.worker}>{worker}</Text>
-    </View>
-  );
-  const Date = <Text style={styles.date}>{date}</Text>;
-  const Machine = (
-    <Badge template="wire">
-      <MaterialCommunityIcons name="cogs" size={14} />
-      <Text>{machine}</Text>
-    </Badge>
-  );
-  const Number = (
-    <Badge template="green">
-      <Text>{number}</Text>
-    </Badge>
-  );
-  const Fail = (
-    <Badge template="red">
-      <Text>{fail}</Text>
-    </Badge>
-  );
-  const Comment = (
+  const workerComp = <Text>{worker}</Text>;
+  const dateComp = <Text style={styles.date}>{date}</Text>;
+  const machineComp = <Badge template="gray">{machine}</Badge>;
+  const numberComp = <Badge template="green">{number}</Badge>;
+  const failComp = <Badge template="red">{fail}</Badge>;
+  const commentComp = (
     <MaterialCommunityIcons name="clipboard-check-outline" size={26} />
   );
 
@@ -132,16 +116,16 @@ const MenuInfo = (props) => {
         <Icon>{type}</Icon>
         <View style={styles.col}>
           <View style={styles.nameRow}>
-            {Worker}
-            {Date}
+            {workerComp}
+            {dateComp}
           </View>
           <View style={{ flexDirection: "row" }}>
             <View style={styles.statRow}>
-              {!isEmpty(machine) && Machine}
-              {!isEmpty(number) && Number}
-              {!isEmpty(fail) && Fail}
+              {!isEmpty(machine) && machineComp}
+              {!isEmpty(number) && numberComp}
+              {!isEmpty(fail) && failComp}
             </View>
-            <View>{!isEmpty(comment) && Comment}</View>
+            <View>{!isEmpty(comment) && commentComp}</View>
           </View>
         </View>
       </View>
@@ -183,8 +167,10 @@ const Badge = (props) => {
       flexDirection: "row",
       marginRight: 8,
       paddingHorizontal: 4,
+      textAlign: "center",
     },
     wire: { borderWidth: 1 },
+    gray: { backgroundColor: "#ccc" },
     green: { backgroundColor: "#8ca" },
     red: { backgroundColor: "#c8a" },
   });
@@ -192,7 +178,9 @@ const Badge = (props) => {
   const color = styles[props.template] ? styles[props.template] : {};
 
   return (
-    <View style={{ ...styles.container, ...color }}>{props.children}</View>
+    <View style={{ ...styles.container, ...color }}>
+      <Text>{props.children}</Text>
+    </View>
   );
 };
 
