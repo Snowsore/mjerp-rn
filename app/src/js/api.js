@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HOST = "http://192.168.2.10:8080";
+const HOST = "http://39.99.52.246:4000";
 const queryString = require("query-string");
 
 const mjFetch = async (path, config = {}) => {
@@ -10,7 +10,6 @@ const mjFetch = async (path, config = {}) => {
     query: config.query,
   });
   try {
-    console.log(url);
     const res = await fetch(url, { method });
     const json = await res.json();
     return json;
@@ -45,7 +44,8 @@ export default {
       method: "POST",
       query: { username, password },
     });
-    return msg;
+    alert(msg);
+    return userData;
   },
 };
 

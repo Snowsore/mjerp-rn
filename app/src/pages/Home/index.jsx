@@ -9,7 +9,6 @@ import ProfileScreen from "./ProfileScreen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { useLogin } from "@/contexts/LoginContext";
-import { useActive } from "@/manager/AppStateManager";
 
 import api from "@/js/api";
 
@@ -17,10 +16,6 @@ const Tab = createBottomTabNavigator();
 
 export default function Home(props) {
   const [login, setLogin] = useLogin();
-  useActive(() => {
-    api.getLogin();
-    if (!login.isLogined) props.navigation.navigate("Login");
-  });
 
   return (
     <Tab.Navigator backBehavior="none" initialRouteName="Welcome">

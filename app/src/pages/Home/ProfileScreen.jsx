@@ -17,6 +17,7 @@ export default function ProfileScreen(props) {
 
   const username = login.username;
   const phone = login.phone;
+  const uid = login.uid;
 
   return (
     <ScrollView style={styles.container}>
@@ -29,12 +30,14 @@ export default function ProfileScreen(props) {
             />
           </View>
         }
-        type="navigation"
-        onPress={() => navigation.push("Login")}
+        type={username ? "none" : "navigate"}
+        onPress={() => {
+          if (!username) navigation.push("Login");
+        }}
       >
         <View>
           <Text style={styles.loginName}>{username ? username : "未登录"}</Text>
-          <Text>{username ? `id: ${phone}` : "点击查看登录信息"}</Text>
+          <Text>{username ? `uid: ${uid}` : "点击查看登录信息"}</Text>
         </View>
       </Stack>
       {/* <Stack
@@ -68,19 +71,23 @@ function Divider(props) {
 }
 
 function Stack(props) {
-  const handler =
-    props.type === "switch" ? (
-      <Switch />
-    ) : (
-      <MaterialCommunityIcons name="chevron-right" size={40} />
-    );
+  const getType = (type) => {
+    switch (type) {
+      case "switch":
+        return <Switch />;
+      case "navigate":
+        return <MaterialCommunityIcons name="chevron-right" size={40} />;
+      case "none":
+        return <></>;
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={props.onPress}>
       <View style={styles.stackContainer}>
         <View style={styles.stackIcon}>{props.icon}</View>
         <Text style={styles.stackContext}>{props.children}</Text>
-        <View style={styles.stackHandler}>{handler}</View>
+        <View style={styles.stackHandler}>{getType(props.type)}</View>
       </View>
     </TouchableWithoutFeedback>
   );

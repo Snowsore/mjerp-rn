@@ -11,18 +11,23 @@ import { Button, Input, Field, Flex } from "@/components/mj";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import { useLogin } from "@/contexts/LoginContext";
+
 import api from "@/js/api";
 
 export default function LoginScreen(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [login, setLogin] = useLogin();
+
   useEffect(() => {
     props.navigation.setOptions({ title: "登录" });
   }, []);
 
   const postLogin = async () => {
     const res = await api.postLogin(username, password);
-    alert(res.msg);
+    setLogin(res);
+    props.navigation.goBack();
   };
 
   return (
