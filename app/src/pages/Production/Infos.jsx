@@ -8,10 +8,9 @@ import {
 } from "react-native";
 
 import dateFormat from "@/js/dateformat";
+import api from "@/js/api";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-import api from "@/js/api";
 
 export default function Infos(props) {
   const [infos, setInfos] = useState([]);

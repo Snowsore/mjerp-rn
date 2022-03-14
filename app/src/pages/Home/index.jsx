@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 
 export default function Home({ navigation }) {
   return (
-    <Tab.Navigator backBehavior="none" initialRouteName="Profile">
+    <Tab.Navigator backBehavior="none" initialRouteName="Welcome">
       <Tab.Screen
         name="Welcome"
         component={AnnounceScreen}

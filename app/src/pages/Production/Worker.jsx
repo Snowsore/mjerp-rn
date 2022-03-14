@@ -8,6 +8,8 @@ import {
   TextInput,
 } from "react-native";
 
+import { Group } from "@/components/mj";
+
 export default function Worker(props) {
   const styles = StyleSheet.create({
     container: {
@@ -18,7 +20,11 @@ export default function Worker(props) {
 
   return (
     <ScrollView style={styles.container}>
-      <Text>Good</Text>
+      <Group>
+        <Group.Item>
+          <Text>Good</Text>
+        </Group.Item>
+      </Group>
     </ScrollView>
   );
 }

@@ -1,20 +1,19 @@
+const HOST = "http://192.168.2.10:8080";
 const queryString = require("query-string");
 
 const mjFetch = async (path, config = {}) => {
-  const query = config.query ? queryString.parse(config.query) : "";
   const method = config.method ? config.method : "GET";
-
-  const url = `http://192.168.2.10:8080${path}${query}`;
-  const fetchConfig = {
-    method,
-  };
-
+  const url = queryString.stringifyUrl({
+    url: `${HOST}${path}`,
+    query: config.query,
+  });
   try {
-    const res = await fetch(url, fetchConfig);
+    console.log(url);
+    const res = await fetch(url, { method });
     const json = await res.json();
     return json;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
@@ -27,5 +26,11 @@ export default {
   },
   postProductionInfos(pid, step, data) {
     return mjFetch(`/p/${pid}/${step}`, { method: "POST", query: data });
+  },
+  postProduction(data) {
+    return mjFetch(`/p/${pid}/${step}`, { method: "POST", query: data });
+  },
+  postLogin(username, password) {
+    return mjFetch(`/login`, { method: "POST", query: { username, password } });
   },
 };

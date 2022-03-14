@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -9,27 +9,35 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import { useLogin } from "@/contexts/Login";
+
 export default function ProfileScreen(props) {
-  const [username, setUsername] = React.useState("李狗蛋");
+  const [login, setLogin] = useLogin();
   const navigation = props.navigation;
+
+  const username = login.username;
+  const phone = login.phone;
 
   return (
     <ScrollView style={styles.container}>
       <Stack
         icon={
           <View style={styles.loginIcon}>
-            <MaterialCommunityIcons name="help" size={30} />
+            <MaterialCommunityIcons
+              name={username ? "account" : `help`}
+              size={30}
+            />
           </View>
         }
         type="navigation"
         onPress={() => navigation.push("Login")}
       >
         <View>
-          <Text style={styles.loginName}>{username}</Text>
-          <Text>点击查看登录信息</Text>
+          <Text style={styles.loginName}>{username ? username : "未登录"}</Text>
+          <Text>{username ? `id: ${phone}` : "点击查看登录信息"}</Text>
         </View>
       </Stack>
-      <Stack
+      {/* <Stack
         icon={
           <View style={styles.iconContainer}>
             <MaterialCommunityIcons name="home" size={30} />
@@ -38,7 +46,7 @@ export default function ProfileScreen(props) {
         type="switch"
       >
         <Text>开关</Text>
-      </Stack>
+      </Stack> */}
       <Divider />
       <Stack
         icon={
@@ -47,6 +55,7 @@ export default function ProfileScreen(props) {
           </View>
         }
         type="navigation"
+        onPress={() => navigation.push("About")}
       >
         <Text>关于</Text>
       </Stack>

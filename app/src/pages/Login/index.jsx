@@ -27,24 +27,3 @@ export default function Login(props) {
     </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-  },
-  header: {
-    height: 200,
-    borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ccc",
-  },
-  loginContainer: {
-    margin: 20,
-    backgroundColor: "#fff",
-  },
-  helpContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-});

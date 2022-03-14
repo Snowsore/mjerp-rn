@@ -3,17 +3,22 @@ import { Text, View, StyleSheet, Button, ScrollView } from "react-native";
 
 import api from "@/js/api";
 
+import { useLogin } from "@/contexts/Login";
+
 export default function AnnounceScreen(props) {
+  const [login, setLogin] = useLogin();
+
   const [announceList, setAnnounceList] = React.useState([]);
 
   React.useEffect(() => {
     api.getAnnounce().then((list) => {
       setAnnounceList(list);
     });
+    // setLogin({ username: "Go is God" });
   }, []);
 
   return (
-    <ScrollView>
+    <ScrollView style={{ padding: 8 }}>
       {announceList.map((announce, index) => (
         <Announce key={`announce_${index}`}>
           <Announce.Title>{announce.title}</Announce.Title>
@@ -25,23 +30,16 @@ export default function AnnounceScreen(props) {
 }
 
 function Announce({ children }) {
-  return <View style={styles.announceContainer}>{children}</View>;
+  return <View style={{ padding: 8, borderBottomWidth: 1 }}>{children}</View>;
 }
 
 function Title({ children }) {
-  return <Text>{children}</Text>;
+  return <Text style={{ fontSize: 30, fontWeight: "bold" }}>{children}</Text>;
 }
 
 function Context({ children }) {
-  return <Text>{children}</Text>;
+  return <Text style={{ fontSize: 20 }}>{children}</Text>;
 }
 
 Announce.Title = Title;
 Announce.Context = Context;
-
-const styles = StyleSheet.create({
-  announceContainer: {
-    margin: 2,
-    borderWidth: 2,
-  },
-});
