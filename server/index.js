@@ -114,10 +114,10 @@ app.get("/p/:id/:step", (req, res) => {
   res.json(ps[0]);
 });
 
-app.post("/p/:id/step", (req, res) => {
+app.post("/p/:id/:step", (req, res) => {
   console.log(req.query);
   // datas[req.params.id][req.params.step][req.params.data] = req.query.value;
-  res.end();
+  res.json({ msg: "Post success" });
 });
 
 app.get("/p/:id", (req, res) => {

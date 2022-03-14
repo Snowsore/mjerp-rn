@@ -14,7 +14,7 @@ import { Group, Input, Button, Flex, Field } from "@/components/mj";
 
 import api from "@/js/api";
 
-export default function Form(props) {
+export default function Manufacture(props) {
   const [type, setType] = useState("");
   const [number, setNumber] = useState(0);
   const [fail, setFail] = useState(0);

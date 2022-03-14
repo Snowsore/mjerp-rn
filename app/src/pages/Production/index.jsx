@@ -2,8 +2,9 @@ import React from "react";
 
 import Info from "./Info";
 import Infos from "./Infos";
-import Form from "./Form";
-import Worker from "./Worker";
+import Manufacture from "./Manufacture";
+import Number from "./Number";
+import Inspect from "./Inspect";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -14,8 +15,9 @@ export default function Login(props) {
     <Stack.Navigator initialRouteName="Infos">
       <Stack.Screen name="Info" component={Info} />
       <Stack.Screen name="Infos" component={Infos} />
-      <Stack.Screen name="Form" component={Form} />
-      <Stack.Screen name="Worker" component={Worker} />
+      <Stack.Screen name="Manufacture" component={Manufacture} />
+      <Stack.Screen name="Inspect" component={Inspect} />
+      <Stack.Screen name="Number" component={Number} />
     </Stack.Navigator>
   );
 }

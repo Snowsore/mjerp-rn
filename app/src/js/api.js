@@ -47,6 +47,9 @@ export default {
     alert(msg);
     return userData;
   },
+  async postInspect(pid, step, data) {
+    return await mjFetch(`/p/${pid}/${step}`, { method: "POST", query: data });
+  },
 };
 
 const userdata = async (value) => {
