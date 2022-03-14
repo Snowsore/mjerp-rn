@@ -1,16 +1,20 @@
 // Root warp
 
 import { NavigationContainer } from "@react-navigation/native";
-import { LoginProvider, useLogin } from "@/contexts/Login";
+import { LoginProvider } from "@/contexts/LoginContext";
 
 import Root from "./index";
 
+import { AppStateManager } from "./manager/AppStateManager";
+
 export default function Main() {
   return (
-    <LoginProvider>
-      <NavigationContainer>
-        <Root />
-      </NavigationContainer>
-    </LoginProvider>
+    <AppStateManager>
+      <LoginProvider>
+        <NavigationContainer>
+          <Root />
+        </NavigationContainer>
+      </LoginProvider>
+    </AppStateManager>
   );
 }

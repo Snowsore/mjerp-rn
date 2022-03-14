@@ -1,6 +1,17 @@
 const express = require("express");
 const app = express();
 
+const session = require("express-session");
+
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {},
+  })
+);
+
 let users = [
   { uid: 1, name: "王小明", username: "Snowsore", password: "123456" },
 ];
@@ -57,6 +68,7 @@ let products = [
 
 app.use((req, res, next) => {
   console.log(req.method, req.path, req.query);
+  console.log(req.session.user);
   next();
 });
 
@@ -64,16 +76,28 @@ app.get("/", (req, res) => {
   res.json({ msg: "welcome" });
 });
 
-app.get("/login", (req, res) => {});
+app.get("/login", (req, res) => {
+  const userData = req.session.userData;
+  if (userData) {
+    res.json({ msg: "已登录", userData });
+  } else {
+    res.json({ error: "未登录" });
+  }
+});
 
 app.post("/login", (req, res) => {
   const username = req.query.username;
   const password = req.query.password;
   const user = users.filter(
-    (user) => user.username == username && user.password == password
-  );
-  if (user.length) res.json({ uid: user[0].uid, msg: "成功登录" });
-  else res.json({ error: "", msg: "登陆失败" });
+    (user) => user.username == "Snowsore" && user.password == "123456"
+  )[0];
+  if (user) {
+    const { password, ...userData } = user;
+    req.session.userData = userData;
+    res.json({ userData, msg: "成功登录" });
+  } else {
+    res.json({ error: "", msg: "登陆失败" });
+  }
 });
 
 app.get("/announce", (req, res) => {

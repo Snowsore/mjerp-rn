@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { useLogin } from "@/contexts/Login";
+import { useLogin } from "@/contexts/LoginContext";
 
 export default function ProfileScreen(props) {
   const [login, setLogin] = useLogin();

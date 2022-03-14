@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Button, ScrollView } from "react-native";
 
 import api from "@/js/api";
 
-import { useLogin } from "@/contexts/Login";
+import { useLogin } from "@/contexts/LoginContext";
 
 export default function AnnounceScreen(props) {
   const [login, setLogin] = useLogin();
 
-  const [announceList, setAnnounceList] = React.useState([]);
+  const [announceList, setAnnounceList] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     api.getAnnounce().then((list) => {
       setAnnounceList(list);
     });

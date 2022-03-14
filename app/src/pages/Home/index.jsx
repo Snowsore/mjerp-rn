@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { TouchableOpacity, Text, View, StyleSheet, Button } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -8,9 +8,20 @@ import ProfileScreen from "./ProfileScreen";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+import { useLogin } from "@/contexts/LoginContext";
+import { useActive } from "@/manager/AppStateManager";
+
+import api from "@/js/api";
+
 const Tab = createBottomTabNavigator();
 
-export default function Home({ navigation }) {
+export default function Home(props) {
+  const [login, setLogin] = useLogin();
+  useActive(() => {
+    api.getLogin();
+    if (!login.isLogined) props.navigation.navigate("Login");
+  });
+
   return (
     <Tab.Navigator backBehavior="none" initialRouteName="Welcome">
       <Tab.Screen

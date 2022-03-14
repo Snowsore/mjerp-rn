@@ -9,7 +9,9 @@ export function useLogin() {
 }
 
 export function LoginProvider(props) {
-  const [login, setLogin] = useState({});
+  const [login, setLogin] = useState({
+    isLogined: false,
+  });
   return (
     <LoginContext.Provider value={[login, setLogin]}>
       {props.children}

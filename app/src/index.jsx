@@ -1,6 +1,3 @@
-import { useState, useEffect, useRef } from "react";
-import { AppState, StatusBar } from "react-native";
-
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Home from "./pages/Home";
@@ -9,40 +6,12 @@ import Login from "./pages/Login";
 import Production from "./pages/Production";
 import About from "./pages/About";
 
-import { LoginProvider, useLogin } from "@/contexts/Login";
+import { useLogin } from "@/contexts/LoginContext";
 
 const Stack = createNativeStackNavigator();
 
-export default function Root() {
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+export default function Root(props) {
   const [login, setLogin] = useLogin();
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener("change", (nextAppState) => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === "active"
-      ) {
-        console.log("App has come to the foreground!");
-      }
-
-      appState.current = nextAppState;
-      setAppStateVisible(appState.current);
-      console.log("AppState", appState.current);
-
-      if (appState.current == "active") {
-        // Go active
-        console.log(login);
-      } else {
-        // Go background
-      }
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, []);
 
   return (
     <Stack.Navigator initialRouteName="Home">
