@@ -1,5 +1,4 @@
-import { Text, StyleSheet, View } from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Text, StyleSheet, View, TouchableWithoutFeedback } from "react-native";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 

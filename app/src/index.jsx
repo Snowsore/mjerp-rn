@@ -1,10 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { AppState, StatusBar } from "react-native";
 
-import {
-  createStackNavigator,
-  TransitionPresets,
-} from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Home from "./pages/Home";
 import Scan from "./pages/Scan";
@@ -14,7 +11,7 @@ import About from "./pages/About";
 
 import { LoginProvider, useLogin } from "@/contexts/Login";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function Root() {
   const appState = useRef(AppState.currentState);

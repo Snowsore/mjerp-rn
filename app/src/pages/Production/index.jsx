@@ -5,10 +5,6 @@ import Infos from "./Infos";
 import Form from "./Form";
 import Worker from "./Worker";
 
-import {
-  TransitionPresets,
-  createStackNavigator,
-} from "@react-navigation/stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
