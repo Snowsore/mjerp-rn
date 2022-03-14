@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
 
+let users = [
+  { uid: 1, name: "王小明", username: "Snowsore", password: "123456" },
+];
+
 let products = [
   {
     id: 2201153101,
@@ -52,7 +56,7 @@ let products = [
 ];
 
 app.use((req, res, next) => {
-  console.log(req.method, req.path);
+  console.log(req.method, req.path, req.query);
   next();
 });
 
@@ -60,13 +64,25 @@ app.get("/", (req, res) => {
   res.json({ msg: "welcome" });
 });
 
-app.get("/announce", (req, res) => {
-  res.json(
-    [...Array(100)].map((x) => ({
-      title: "Title: : " + Math.random().toString(36),
-      context: Math.random().toString(36),
-    }))
+app.get("/login", (req, res) => {});
+
+app.post("/login", (req, res) => {
+  const username = req.query.username;
+  const password = req.query.password;
+  const user = users.filter(
+    (user) => user.username == username && user.password == password
   );
+  if (user.length) res.json({ uid: user[0].uid, msg: "成功登录" });
+  else res.json({ error: "", msg: "登陆失败" });
+});
+
+app.get("/announce", (req, res) => {
+  res.json([
+    {
+      title: "欢迎使用美进ERP系统",
+      context: "目前为内侧阶段",
+    },
+  ]);
 });
 
 app.get("/p/:id/:step", (req, res) => {
