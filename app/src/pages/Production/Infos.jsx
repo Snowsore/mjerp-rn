@@ -14,17 +14,19 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 export default function Infos(props) {
   const [infos, setInfos] = useState([]);
-
-  const params = props.route.params;
-  const pid = params ? params.pid : "2201153101";
+  const pid = props.route.params.pid;
 
   useEffect(async () => {
-    const infos = await api.getProductInfos(pid);
-    setInfos(infos);
+    try {
+      setInfos(await api.getProductInfos(pid));
 
-    props.navigation.setOptions({
-      title: `单号：${pid}`,
-    });
+      props.navigation.setOptions({
+        title: `单号：${pid}`,
+      });
+    } catch (err) {
+      alert("无法找到产品信息");
+      props.navigation.goBack();
+    }
   }, []);
 
   const styles = {
@@ -39,9 +41,7 @@ export default function Infos(props) {
   const productInfoListComps = infos.map((info, index) => (
     <MenuInfo
       key={`info_${index}`}
-      onPress={() =>
-        props.navigation.push("Info", { pid, index, info: infos[index] })
-      }
+      onPress={() => props.navigation.push("Info", { info: infos[index] })}
       {...info}
     />
   ));

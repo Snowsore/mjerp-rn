@@ -14,7 +14,6 @@ export default function AnnounceScreen(props) {
     try {
       setAnnounceList(await api.getAnnounce());
     } catch (err) {
-      console.error(err);
       alert(err.message);
     }
   }, []);

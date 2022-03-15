@@ -22,10 +22,14 @@ export default function Scan({ navigation }) {
   }
 
   const handleBarCodeScanned = ({ type, data }) => {
-    navigation.replace("Production", {
-      data: "hellow",
-      title: "生产计划：XYZ0203",
-    });
+    try {
+      const json = JSON.parse(data);
+      const pid = String(json.pid.valueOf());
+      const params = { pid };
+      navigation.replace("Production", { screen: "Infos", params });
+    } catch (err) {
+      alert("请扫描正确的二维码");
+    }
   };
 
   return (

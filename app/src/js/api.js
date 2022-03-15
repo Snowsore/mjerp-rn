@@ -3,20 +3,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const HOST = "http://192.168.2.10:8080";
 const queryString = require("query-string");
 
-class ConnectionError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = "ConnectionError";
-  }
-}
-
-class ConvertError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = "ConvertError";
-  }
-}
-
 const mjFetch = async (path, config = {}) => {
   const method = config.method ? config.method : "GET";
   const url = queryString.stringifyUrl({
@@ -32,7 +18,7 @@ const mjFetch = async (path, config = {}) => {
     return { ...res, json };
   } catch (err) {
     console.error(err);
-    throw new ConnectionError("连接服务器失败");
+    throw new Error("连接服务器失败");
   }
 };
 
@@ -41,18 +27,37 @@ export default {
     const res = await mjFetch("/announce");
 
     try {
-      let list = [];
-      res.json.map((x) => list.push({ title: x.title, context: x.context }));
-      console.log(list);
-      return list;
+      const announces = res.json.map((x) => {
+        const title = String(x.title.valueOf());
+        const context = String(x.title.valueOf());
+        return { title, context };
+      });
+      return announces;
     } catch (err) {
       console.error(err);
-      throw new ConvertError(`获取列表失败`);
+      throw new Error("获取列表失败");
     }
   },
   async getProductInfos(pid) {
-    console.log(await this.getLogin());
-    return await mjFetch(`/p/${pid}`);
+    const res = await mjFetch(`/p/${pid}`);
+
+    try {
+      const infos = res.json.map((x) => {
+        const id = String(x.id.valueOf());
+        const step = Number(x.step.valueOf());
+        const worker = String(x.worker.valueOf());
+        const date = Number(x.date.valueOf());
+        const type = String(x.type.valueOf());
+        const number = Number(x.number.valueOf());
+        const fail = Number(x.fail.valueOf());
+        const machine = String(x.machine.valueOf());
+        return { id, step, worker, date, type, number, fail, machine };
+      });
+      return infos;
+    } catch (err) {
+      console.error(err);
+      throw new Error("获取产品信息失败");
+    }
   },
   async postProductionInfos(pid, step, data) {
     console.log(await this.getLogin());
@@ -67,14 +72,21 @@ export default {
     return res;
   },
   async postLogin(phone, password) {
-    await userdata({ phone, password });
-
     const res = await mjFetch("/login", {
       method: "POST",
       query: { phone, password },
     });
 
-    return res.json;
+    try {
+      const uid = Number(res.json.uid.valueOf());
+      const username = String(res.json.username.valueOf());
+      const phone = String(res.json.phone.valueOf());
+      const login = { uid, username, phone };
+      return login;
+    } catch (err) {
+      console.error(err);
+      throw new Error("用户不存在或密码错误");
+    }
   },
   async postInspect(pid, step, data) {
     return await mjFetch(`/p/${pid}/${step}`, { method: "POST", query: data });

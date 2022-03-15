@@ -43,6 +43,7 @@ export default function Input(props) {
 
   return (
     <TextInput
+      value={props.value}
       onChangeText={props.onChange}
       keyboardType={type}
       style={styles.input}

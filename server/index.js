@@ -25,7 +25,7 @@ let users = [
 
 let products = [
   {
-    id: 2201153101,
+    id: "2201153101",
     step: 1,
     type: "A",
     worker: "刘强东",
@@ -37,39 +37,64 @@ let products = [
     comment: "这是测试",
   },
   {
-    id: 2201153101,
+    id: "2201153101",
     step: 2,
     type: "ASZ1",
     worker: "刘强东",
     date: Date.now(),
-    type: "SZ1",
     number: 210,
     fail: 10,
     machine: "A01",
   },
   {
-    id: 2201153101,
+    id: "2201153101",
     step: 3,
     type: "D",
+    worker: "",
+    date: 0,
+    number: 0,
+    fail: 0,
+    machine: "",
   },
   {
-    id: 2201153101,
+    id: "2201153101",
     step: 4,
+    type: "",
+    worker: "",
+    date: 0,
+    number: 0,
+    fail: 0,
+    machine: "",
   },
   {
-    id: 2201153101,
+    id: "2201153101",
     step: 5,
     type: "ZC9.1",
+    worker: "",
+    date: 0,
+    number: 0,
+    fail: 0,
+    machine: "",
   },
   {
-    id: 2201153101,
+    id: "2201153101",
     step: 6,
     type: "Q5",
+    worker: "",
+    date: 0,
+    number: 0,
+    fail: 0,
+    machine: "",
   },
   {
-    id: 2201153101,
+    id: "2201153101",
     step: 7,
     type: "W",
+    worker: "",
+    date: 0,
+    number: 0,
+    fail: 0,
+    machine: "",
   },
 ];
 
@@ -82,10 +107,6 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
   res.json({ msg: "Welcome MeiJinERP server" });
-});
-
-app.get("/test", (req, res) => {
-  res.end();
 });
 
 app.get("/login", (req, res) => {
@@ -102,7 +123,7 @@ app.post("/login", (req, res) => {
   const password = req.query.password;
 
   const user = users.filter(
-    (user) => true || (user.phone == phone && user.password == password)
+    (user) => user.phone == phone && user.password == password
   )[0];
 
   if (user) {
@@ -110,7 +131,7 @@ app.post("/login", (req, res) => {
     req.session.user = userData;
     res.json(userData);
   } else {
-    res.status(401).json();
+    res.status(401).end();
   }
 });
 
