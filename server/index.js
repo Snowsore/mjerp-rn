@@ -3,6 +3,13 @@ const app = express();
 
 const session = require("express-session");
 
+const colors = require("colors");
+
+colors.setTheme({
+  GET: "green",
+  POST: "blue",
+});
+
 app.use(
   session({
     secret: "keyboard cat",
@@ -13,7 +20,7 @@ app.use(
 );
 
 let users = [
-  { uid: 1, name: "王小明", username: "Snowsore", password: "123456" },
+  { uid: 1, phone: "15655197127", username: "郑润宇", password: "123456" },
 ];
 
 let products = [
@@ -67,13 +74,18 @@ let products = [
 ];
 
 app.use((req, res, next) => {
-  console.log(req.method, req.path, req.query);
-  console.log(req.session.user);
+  const method = colors[req.method](req.method.padEnd(4, " "));
+  const user = req.session.user ? `id: ${req.session.user.uid}` : "";
+  console.log(" - ", method, req.path, user);
   next();
 });
 
 app.get("/", (req, res) => {
-  res.json({ msg: "welcome" });
+  res.json({ msg: "Welcome MeiJinERP server" });
+});
+
+app.get("/test", (req, res) => {
+  res.end();
 });
 
 app.get("/login", (req, res) => {
@@ -81,22 +93,24 @@ app.get("/login", (req, res) => {
   if (userData) {
     res.json({ msg: "已登录", userData });
   } else {
-    res.json({ error: "未登录" });
+    res.status(401).end();
   }
 });
 
 app.post("/login", (req, res) => {
-  const username = req.query.username;
+  const phone = req.query.phone;
   const password = req.query.password;
+
   const user = users.filter(
-    (user) => user.username == "Snowsore" && user.password == "123456"
+    (user) => true || (user.phone == phone && user.password == password)
   )[0];
+
   if (user) {
     const { password, ...userData } = user;
-    req.session.userData = userData;
-    res.json({ userData, msg: "成功登录" });
+    req.session.user = userData;
+    res.json(userData);
   } else {
-    res.json({ error: "", msg: "登陆失败" });
+    res.status(401).json();
   }
 });
 

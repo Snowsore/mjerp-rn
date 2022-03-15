@@ -1,7 +1,21 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HOST = "http://39.99.52.246:4000";
+const HOST = "http://192.168.2.10:8080";
 const queryString = require("query-string");
+
+class ConnectionError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "ConnectionError";
+  }
+}
+
+class ConvertError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "ConvertError";
+  }
+}
 
 const mjFetch = async (path, config = {}) => {
   const method = config.method ? config.method : "GET";
@@ -9,18 +23,32 @@ const mjFetch = async (path, config = {}) => {
     url: `${HOST}${path}`,
     query: config.query,
   });
+
   try {
     const res = await fetch(url, { method });
-    const json = await res.json();
-    return json;
+    const type = res.headers.get("content-type");
+    const isJson = type?.includes("application/json");
+    const json = isJson ? await res.json() : null;
+    return { ...res, json };
   } catch (err) {
     console.error(err);
+    throw new ConnectionError("连接服务器失败");
   }
 };
 
 export default {
   async getAnnounce() {
-    return await mjFetch("/announce");
+    const res = await mjFetch("/announce");
+
+    try {
+      let list = [];
+      res.json.map((x) => list.push({ title: x.title, context: x.context }));
+      console.log(list);
+      return list;
+    } catch (err) {
+      console.error(err);
+      throw new ConvertError(`获取列表失败`);
+    }
   },
   async getProductInfos(pid) {
     console.log(await this.getLogin());
@@ -38,14 +66,15 @@ export default {
     const res = await mjFetch("/login");
     return res;
   },
-  async postLogin(username, password) {
-    await userdata({ username, password });
-    const { error, msg, userData } = await mjFetch("/login", {
+  async postLogin(phone, password) {
+    await userdata({ phone, password });
+
+    const res = await mjFetch("/login", {
       method: "POST",
-      query: { username, password },
+      query: { phone, password },
     });
-    alert(msg);
-    return userData;
+
+    return res.json;
   },
   async postInspect(pid, step, data) {
     return await mjFetch(`/p/${pid}/${step}`, { method: "POST", query: data });

@@ -10,11 +10,13 @@ export default function AnnounceScreen(props) {
 
   const [announceList, setAnnounceList] = useState([]);
 
-  useEffect(() => {
-    api.getAnnounce().then((list) => {
-      setAnnounceList(list);
-    });
-    // setLogin({ username: "Go is God" });
+  useEffect(async () => {
+    try {
+      setAnnounceList(await api.getAnnounce());
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
   }, []);
 
   return (

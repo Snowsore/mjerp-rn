@@ -33,11 +33,13 @@ export default function Manufacture(props) {
   });
 
   const post = () => {
-    api.postProduct({
-      type,
-      number,
-      fail,
-    });
+    // api.postProduct({
+    //   type,
+    //   number,
+    //   fail,
+    // });
+    props.navigation.goBack();
+    alert("Post success");
   };
 
   return (

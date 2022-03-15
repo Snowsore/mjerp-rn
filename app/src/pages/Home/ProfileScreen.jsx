@@ -15,29 +15,28 @@ export default function ProfileScreen(props) {
   const [login, setLogin] = useLogin();
   const navigation = props.navigation;
 
-  const username = login.username;
-  const phone = login.phone;
-  const uid = login.uid;
+  const { username, phone, uid } = login;
+
+  const nameString = username ? username : "未登录";
+  const phoneString = username ? `电话: ${phone}` : "点击查看登录信息";
+  const icon = (
+    <MaterialCommunityIcons name={username ? "account" : `help`} size={30} />
+  );
+  const type = username ? "none" : "navigate";
+  const onPress = () => {
+    if (!username) navigation.push("Login");
+  };
 
   return (
     <ScrollView style={styles.container}>
       <Stack
-        icon={
-          <View style={styles.loginIcon}>
-            <MaterialCommunityIcons
-              name={username ? "account" : `help`}
-              size={30}
-            />
-          </View>
-        }
-        type={username ? "none" : "navigate"}
-        onPress={() => {
-          if (!username) navigation.push("Login");
-        }}
+        icon={<View style={styles.loginIcon}>{icon}</View>}
+        type={type}
+        onPress={onPress}
       >
         <View>
-          <Text style={styles.loginName}>{username ? username : "未登录"}</Text>
-          <Text>{username ? `uid: ${uid}` : "点击查看登录信息"}</Text>
+          <Text style={styles.loginName}>{nameString}</Text>
+          <Text>{phoneString}</Text>
         </View>
       </Stack>
       {/* <Stack

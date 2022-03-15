@@ -16,7 +16,7 @@ import { useLogin } from "@/contexts/LoginContext";
 import api from "@/js/api";
 
 export default function LoginScreen(props) {
-  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [login, setLogin] = useLogin();
 
@@ -25,9 +25,13 @@ export default function LoginScreen(props) {
   }, []);
 
   const postLogin = async () => {
-    const res = await api.postLogin(username, password);
-    setLogin(res);
-    props.navigation.goBack();
+    try {
+      const login = await api.postLogin(phone, password);
+      setLogin(login);
+      props.navigation.goBack();
+    } catch (err) {
+      alert("账号或密码错误");
+    }
   };
 
   return (
@@ -37,8 +41,8 @@ export default function LoginScreen(props) {
       </View>
       <View style={{ padding: 24 }}>
         <Flex gap={10}>
-          <Field title="用户名">
-            <Input onChange={setUsername} />
+          <Field title="手机号">
+            <Input onChange={setPhone} type="number" />
           </Field>
           <Field title="密码">
             <Input onChange={setPassword} type="password" />
