@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Text, View, Button, ScrollView } from "react-native";
 
-import { getAnnounce, getLogin } from "@/js/api";
+import { getAnnounce, getLogin, famek } from "@/js/api";
 
 import { useLogin } from "@/contexts/LoginContext";
 
@@ -11,6 +11,8 @@ export default function AnnounceScreen(props) {
   const [announceList, setAnnounceList] = useState([]);
 
   useEffect(async () => {
+    props.navigation.setOptions({ title: "公告页面" });
+
     try {
       setLogin(await getLogin());
     } catch (err) {}
@@ -29,7 +31,11 @@ export default function AnnounceScreen(props) {
     </Announce>
   ));
 
-  return <ScrollView style={{ padding: 8 }}>{AnnounceComps}</ScrollView>;
+  return (
+    <ScrollView style={{ backgroundColor: "#E1E6E1", padding: 8 }}>
+      {AnnounceComps}
+    </ScrollView>
+  );
 }
 
 const Announce = ({ children }) => {

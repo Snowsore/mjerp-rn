@@ -38,6 +38,8 @@ let products = [
     number: 210,
     fail: 10,
     machine: "A01",
+    inspector: "",
+    comment: "",
   },
   {
     id: "2201153101",
@@ -48,6 +50,8 @@ let products = [
     number: 0,
     fail: 0,
     machine: "",
+    inspector: "",
+    comment: "",
   },
   {
     id: "2201153101",
@@ -58,6 +62,8 @@ let products = [
     number: 0,
     fail: 0,
     machine: "",
+    inspector: "",
+    comment: "",
   },
   {
     id: "2201153101",
@@ -68,6 +74,8 @@ let products = [
     number: 0,
     fail: 0,
     machine: "",
+    inspector: "",
+    comment: "",
   },
   {
     id: "2201153101",
@@ -78,6 +86,8 @@ let products = [
     number: 0,
     fail: 0,
     machine: "",
+    inspector: "",
+    comment: "",
   },
   {
     id: "2201153101",
@@ -88,12 +98,14 @@ let products = [
     number: 0,
     fail: 0,
     machine: "",
+    inspector: "",
+    comment: "",
   },
 ];
 
 const isLogin = (req, res, next) => {
-  if (req.session.user) next();
-  else res.status(401).end();
+  if (req.session.login) next();
+  else res.status(403).end();
 };
 
 app.use(express.json());
@@ -111,8 +123,7 @@ app.use(
 
 app.use((req, res, next) => {
   const method = colors[req.method](req.method.padEnd(4, " "));
-  const user = req.session.id;
-  console.log(" - ", method, req.path, req.body, user);
+  console.log(" - ", method, req.path, req.body, req.session.id);
   next();
 });
 
@@ -120,8 +131,17 @@ app.get("/", (req, res) => {
   res.json({ msg: "Welcome MeiJinERP server" });
 });
 
+app.get("/announce", (req, res) => {
+  res.json([
+    {
+      title: "欢迎使用美进ERP系统",
+      context: "目前为内侧阶段",
+    },
+  ]);
+});
+
 app.get("/login", isLogin, (req, res) => {
-  res.json(req.session.user);
+  res.json(req.session.login);
 });
 
 app.post("/login", (req, res) => {
@@ -134,20 +154,17 @@ app.post("/login", (req, res) => {
 
   if (user) {
     const { password, ...userData } = user;
-    req.session.user = userData;
+    req.session.login = userData;
     res.json(userData);
   } else {
     res.status(401).end();
   }
 });
 
-app.get("/announce", (req, res) => {
-  res.json([
-    {
-      title: "欢迎使用美进ERP系统",
-      context: "目前为内侧阶段",
-    },
-  ]);
+app.get("/p/:id", isLogin, (req, res) => {
+  const id = req.params.id;
+  const ps = products.filter((p) => p.id == id).sort((a, b) => a.step > b.step);
+  res.json(ps);
 });
 
 app.get("/p/:id/:step", (req, res) => {
@@ -155,33 +172,25 @@ app.get("/p/:id/:step", (req, res) => {
   res.json(ps[0]);
 });
 
-app.get("/test", (req, res) => {
-  res.end();
-});
-
 app.post("/p/:id/:step", (req, res) => {
   const id = req.params.id;
   const step = req.params.step;
+  const d =
+    req.body.comment != undefined
+      ? { inspector: req.session.login.username }
+      : {};
   products = products.map((x) => {
     if (x.id == id && x.step == step) {
-      return { ...x, ...req.query };
+      return { ...x, ...req.body, ...d };
     } else {
       return x;
     }
   });
-  console.log(products);
+  console.log(products.filter((x) => x.id == id && x.step == step));
   res.end();
 });
 
-app.get("/p/:id", (req, res) => {
-  const ps = products
-    .filter((p) => p.id == req.params.id)
-    .sort((a, b) => a.step > b.step);
-  res.json(ps);
-});
-
 const PORT = process.env.PORT ? process.env.PORT : 8080;
-
 app.listen(PORT, () => {
-  console.log(`Server start at ${PORT}`);
+  console.log("Server start at", PORT);
 });

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import dateFormat from "@/js/dateformat";
-import api from "@/js/api";
+import { getProductInfos } from "@/js/api";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -18,13 +18,13 @@ export default function Infos(props) {
 
   useEffect(async () => {
     try {
-      setInfos(await api.getProductInfos(pid));
+      setInfos(await getProductInfos(pid));
 
       props.navigation.setOptions({
         title: `单号：${pid}`,
       });
     } catch (err) {
-      alert("无法找到产品信息");
+      alert(err.message);
       props.navigation.goBack();
     }
   }, []);
@@ -60,6 +60,7 @@ const MenuInfo = (props) => {
   const number = props.number ? props.number : "";
   const fail = props.fail ? props.fail : "";
   const machine = props.machine ? props.machine : "";
+  const inspector = props.inspector ? props.inspector : "";
   const comment = props.comment ? props.comment : "";
 
   const onPress = () => {
@@ -101,7 +102,7 @@ const MenuInfo = (props) => {
   const machineComp = <Badge template="gray">{machine}</Badge>;
   const numberComp = <Badge template="green">{number}</Badge>;
   const failComp = <Badge template="red">{fail}</Badge>;
-  const commentComp = (
+  const inspectorComp = (
     <MaterialCommunityIcons name="clipboard-check-outline" size={26} />
   );
 
@@ -124,7 +125,7 @@ const MenuInfo = (props) => {
               {!isEmpty(number) && numberComp}
               {!isEmpty(fail) && failComp}
             </View>
-            <View>{!isEmpty(comment) && commentComp}</View>
+            <View>{!isEmpty(inspector) && inspectorComp}</View>
           </View>
         </View>
       </View>

@@ -12,7 +12,13 @@ const Stack = createNativeStackNavigator();
 
 export default function Login(props) {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#f4511e",
+        },
+      }}
+    >
       <Stack.Screen name="Info" component={Info} />
       <Stack.Screen name="Infos" component={Infos} />
       <Stack.Screen name="Manufacture" component={Manufacture} />

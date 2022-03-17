@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import {
   Text,
   View,
@@ -25,6 +27,10 @@ export default function ProfileScreen(props) {
     if (!username) navigation.push("Login", { screen: "LoginScreen" });
     else navigation.push("Login", { screen: "UserScreen" });
   };
+
+  useEffect(() => {
+    props.navigation.setOptions({ title: "个人页面" });
+  }, []);
 
   return (
     <ScrollView style={styles.container}>

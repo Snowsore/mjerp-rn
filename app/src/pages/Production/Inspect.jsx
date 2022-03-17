@@ -1,18 +1,9 @@
 import { useState, useEffect } from "react";
-import {
-  Text,
-  ScrollView,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import { Picker } from "@react-native-picker/picker";
+import { Input, Button, Flex, Field } from "@/components/mj";
 
-import { Group, Input, Button, Flex, Field } from "@/components/mj";
-
-import api from "@/js/api";
+import { postProductInfo } from "@/js/api";
 
 export default function Inspect(props) {
   const [comment, setComment] = useState("");
@@ -32,12 +23,13 @@ export default function Inspect(props) {
     container: {
       backgroundColor: "#fff",
       padding: 36,
+      flex: 1,
     },
   });
 
   const post = async () => {
     try {
-      await api.postProductInfo(id, step, { comment });
+      await postProductInfo(id, step, { comment });
       alert("更新成功");
       props.navigation.replace("Infos", { pid: info.id });
     } catch (err) {
@@ -46,13 +38,13 @@ export default function Inspect(props) {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Flex gap={8}>
         <Field title="备注">
           <Input value={comment} onChange={setComment} />
         </Field>
         <Button template="green" title="确认" onPress={post} />
       </Flex>
-    </ScrollView>
+    </View>
   );
 }

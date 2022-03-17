@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-export default function About(props) {
+export default function AboutScreen(props) {
   const styles = StyleSheet.create({
     frame: {
       backgroundColor: "#eee",

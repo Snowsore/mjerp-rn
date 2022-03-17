@@ -1,6 +1,5 @@
 import AnnounceScreen from "./AnnounceScreen";
 import ProfileScreen from "./ProfileScreen";
-
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -8,7 +7,23 @@ const Tab = createBottomTabNavigator();
 
 export default function Home(props) {
   return (
-    <Tab.Navigator backBehavior="none" initialRouteName="Welcome">
+    <Tab.Navigator
+      backBehavior="none"
+      initialRouteName="Welcome"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#f4511e",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+        tabBarActiveTintColor: "#000",
+        tabBarInactiveTintColor: "#fff",
+        tabBarActiveBackgroundColor: "#fff",
+        tabBarInactiveBackgroundColor: "#f4511e",
+      }}
+    >
       <Tab.Screen
         name="Welcome"
         component={AnnounceScreen}
@@ -35,7 +50,7 @@ export default function Home(props) {
         listeners={({ navigation }) => ({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.push("Scan");
+            navigation.push("ScanScreen");
           },
         })}
       />

@@ -15,17 +15,26 @@ import { useLogin } from "@/contexts/LoginContext";
 
 import { postLogin } from "@/js/api";
 
+import { setItemAsync, getItemAsync } from "expo-secure-store";
+
 export default function LoginScreen(props) {
   const [login, setLogin] = useLogin();
-  const [phone, setPhone] = useState("15655197127");
-  const [password, setPassword] = useState("123456");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
 
-  useEffect(() => {
+  useEffect(async () => {
     props.navigation.setOptions({ title: "登录" });
+
+    const user = JSON.parse(await getItemAsync("user"));
+    if (user) {
+      setPhone(user.phone);
+      setPassword(user.password);
+    }
   }, []);
 
   const getLogin = async () => {
     try {
+      await setItemAsync("user", JSON.stringify({ phone, password }));
       setLogin(await postLogin({ phone, password }));
       props.navigation.goBack();
     } catch (err) {
@@ -34,7 +43,7 @@ export default function LoginScreen(props) {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <MaterialCommunityIcons name="account" size={200} />
       </View>
@@ -63,7 +72,7 @@ export default function LoginScreen(props) {
           </View>
         </Flex>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -77,6 +86,7 @@ function Link(props) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#fff",
   },
   header: {

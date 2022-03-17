@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Home from "./pages/Home";
-import Scan from "./pages/Scan";
 import Login from "./pages/Login";
 import Production from "./pages/Production";
-import About from "./pages/About";
+import AboutScreen from "./pages/AboutScreen";
+import ScanScreen from "./pages/ScanScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,8 +15,8 @@ export default function Root(props) {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Production" component={Production} />
-        <Stack.Screen name="Scan" component={Scan} />
-        <Stack.Screen name="About" component={About} />
+        <Stack.Screen name="About" component={AboutScreen} />
+        <Stack.Screen name="ScanScreen" component={ScanScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );

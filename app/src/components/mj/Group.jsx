@@ -33,8 +33,8 @@ const Group = (props) => {
 };
 
 Group.Item = (props) => {
-  const title = props.title ? props.title : null;
-  const value = props.value ? props.value : null;
+  const title = props.title;
+  const value = props.value;
   const onPress = props.onPress;
 
   const styles = StyleSheet.create({
@@ -53,8 +53,8 @@ Group.Item = (props) => {
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.card}>
         <View style={styles.content}>
-          {title && <Text style={{ fontSize: 10 }}>{title}</Text>}
-          {value && <Text style={{ fontSize: 20 }}>{value}</Text>}
+          {title != undefined && <Text style={{ fontSize: 10 }}>{title}</Text>}
+          {value != undefined && <Text style={{ fontSize: 20 }}>{value}</Text>}
           {props.children}
         </View>
         {onPress && (

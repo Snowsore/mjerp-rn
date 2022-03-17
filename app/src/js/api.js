@@ -1,8 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setItemAsync, deleteItemAsync, getItemAsync } from "expo-secure-store";
-
-const Ajv = require("ajv");
-const ajv = new Ajv({ removeAdditional: true });
 
 const axios = require("axios");
 
@@ -14,7 +10,7 @@ const send = (() => {
   const errorHandler = (err) => {
     const code = err.response.status;
     if (code == 401) throw new Error("用户名或密码错误");
-    console.error(err);
+    if (code == 403) throw new Error("登录信息已过期，请重新登录");
     throw new Error("服务器连接失败");
   };
 
@@ -24,45 +20,28 @@ const send = (() => {
   return { get, post };
 })();
 
-const validates = {
-  announce: ajv.compile({
-    type: "array",
-    items: {
-      type: "object",
-      properties: {
-        title: { type: "string" },
-        context: { type: "string" },
-      },
-      required: ["title", "context"],
-    },
-  }),
-  login: ajv.compile({
-    type: "object",
-    properties: {
-      uid: { type: "number" },
-      username: { type: "string" },
-      phone: { type: "string" },
-    },
-    required: ["uid", "username", "phone"],
-  }),
-};
-
 export const getAnnounce = async () => {
   const { data } = await send.get("/announce");
-  if (!validates.announce(data)) throw new Error("公告数据错误");
   return data;
 };
 
 export const getLogin = async () => {
   const { data } = await send.get("/login");
-  if (!validates.login(data)) throw new Error("用户数据错误");
   return data;
 };
 
 export const postLogin = async (body) => {
   const { data } = await send.post("/login", body);
-  console.log(data);
-  if (!validates.login(data)) throw new Error("用户数据错误");
+  return data;
+};
+
+export const getProductInfos = async (pid) => {
+  const { data } = await send.get(`/p/${pid}`);
+  return data;
+};
+
+export const postProductInfo = async (pid, step, body) => {
+  const { data } = await send.post(`/p/${pid}/${step}`, body);
   return data;
 };
 
@@ -99,15 +78,6 @@ export default {
   async postProduction(data) {
     console.log(await this.getLogin());
     // return await mjFetch(`/p/${pid}/${step}`, { method: "POST", query: data });
-  },
-  async postProductInfo(pid, step, data) {
-    const res = await mjFetch(`/p/${pid}/${step}`, {
-      method: "POST",
-      query: data,
-    });
-
-    if (res.status == 401) throw new Error("请登录后使用此功能");
-    // if (!res.ok) throw new Error(res.status);
   },
   async getLogin() {
     const res = await mjFetch("/login");
