@@ -6,13 +6,9 @@ import Login from "./pages/Login";
 import Production from "./pages/Production";
 import About from "./pages/About";
 
-import { useLogin } from "@/contexts/LoginContext";
-
 const Stack = createNativeStackNavigator();
 
 export default function Root(props) {
-  const [login, setLogin] = useLogin();
-
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Group screenOptions={{ headerShown: false }}>

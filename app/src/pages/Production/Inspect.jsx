@@ -17,6 +17,11 @@ import api from "@/js/api";
 export default function Inspect(props) {
   const [comment, setComment] = useState("");
 
+  const params = props.route.params;
+  const info = params.info;
+  const id = info.id;
+  const step = info.step;
+
   useEffect(() => {
     props.navigation.setOptions({
       title: "质检",
@@ -31,11 +36,13 @@ export default function Inspect(props) {
   });
 
   const post = async () => {
-    const res = await api.postInspect(1010, 1, {
-      comment,
-    });
-    alert(res.msg);
-    props.navigation.goBack();
+    try {
+      await api.postProductInfo(id, step, { comment });
+      alert("更新成功");
+      props.navigation.replace("Infos", { pid: info.id });
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   return (

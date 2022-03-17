@@ -2,6 +2,7 @@
 import { StyleSheet, View, Text } from "react-native";
 
 function Field(props) {
+  const title = props.title;
   const styles = StyleSheet.create({
     container: {
       backgroundColor: "#fff",
@@ -21,7 +22,7 @@ function Field(props) {
     },
   });
 
-  const label = <Text style={styles.label}>{props.title}</Text>;
+  const label = title ? <Text style={styles.label}>{title}</Text> : <></>;
 
   return (
     <View style={styles.container}>

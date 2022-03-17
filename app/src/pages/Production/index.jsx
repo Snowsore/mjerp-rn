@@ -4,7 +4,7 @@ import Info from "./Info";
 import Infos from "./Infos";
 import Manufacture from "./Manufacture";
 import Inspect from "./Inspect";
-import Input from "./Input";
+import PostInfo from "./PostInfo";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -17,7 +17,7 @@ export default function Login(props) {
       <Stack.Screen name="Infos" component={Infos} />
       <Stack.Screen name="Manufacture" component={Manufacture} />
       <Stack.Screen name="Inspect" component={Inspect} />
-      <Stack.Screen name="Input" component={Input} />
+      <Stack.Screen name="PostInfo" component={PostInfo} />
     </Stack.Navigator>
   );
 }

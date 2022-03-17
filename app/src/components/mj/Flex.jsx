@@ -29,7 +29,7 @@ function Frame(props) {
       ? { ...children.props.style, ...gap }
       : { ...gap };
     return (
-      <View key={`flex_${index}`} style={style}>
+      <View key={`flex_${index}`} style={[style]}>
         {children}
       </View>
     );

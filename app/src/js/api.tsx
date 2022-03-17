@@ -1,42 +1,40 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HOST = "http://192.168.2.10:8080";
-const queryString = require("query-string");
+import { setItemAsync, deleteItemAsync, getItemAsync } from "expo-secure-store";
 
-const mjFetch = async (path, config = {}) => {
-  const method = config.method ? config.method : "GET";
-  const url = queryString.stringifyUrl({
-    url: `${HOST}${path}`,
-    query: config.query,
-  });
+const axios = require("axios");
+const userRequest = axios.create({
+  baseURL: "http://192.168.2.10:8080",
+});
 
-  try {
-    const res = await fetch(url, { method });
-    const type = res.headers.get("content-type");
-    const isJson = type?.includes("application/json");
-    const json = isJson ? await res.json() : null;
-    return { ...res, json };
-  } catch (err) {
-    console.error(err);
-    throw new Error("连接服务器失败");
-  }
-};
+// const mjFetch = async (path, params = {}) => {
+//   const method = params.method ? params.method : "GET";
+//   const credentials = "include";
+//   const url = queryString.stringifyUrl({
+//     url: `${HOST}${path}`,
+//     query: params.query,
+//   });
+//   const config = { method, credentials };
+
+//   try {
+//     const res = await fetch(url, config);
+//     const type = res.headers.get("content-type");
+//     const isJson = type?.includes("application/json");
+//     const json = isJson ? await res.json() : null;
+//     return { ...res, json };
+//   } catch (err) {
+//     console.error(err);
+//     throw new Error("连接服务器失败");
+//   }
+// };
 
 export default {
+  async test() {
+    // const res = await mjFetch("/test");
+  },
   async getAnnounce() {
-    const res = await mjFetch("/announce");
-
-    try {
-      const announces = res.json.map((x) => {
-        const title = String(x.title.valueOf());
-        const context = String(x.title.valueOf());
-        return { title, context };
-      });
-      return announces;
-    } catch (err) {
-      console.error(err);
-      throw new Error("获取列表失败");
-    }
+    const res = await axios.get("/announce");
+    return res.data;
   },
   async getProductInfos(pid) {
     const res = await mjFetch(`/p/${pid}`);
@@ -65,28 +63,30 @@ export default {
   },
   async postProduction(data) {
     console.log(await this.getLogin());
-    return await mjFetch(`/p/${pid}/${step}`, { method: "POST", query: data });
+    // return await mjFetch(`/p/${pid}/${step}`, { method: "POST", query: data });
+  },
+  async postProductInfo(pid, step, data) {
+    const res = await mjFetch(`/p/${pid}/${step}`, {
+      method: "POST",
+      query: data,
+    });
+
+    if (res.status == 401) throw new Error("请登录后使用此功能");
+    // if (!res.ok) throw new Error(res.status);
   },
   async getLogin() {
     const res = await mjFetch("/login");
-    return res;
-  },
-  async postLogin(phone, password) {
-    const res = await mjFetch("/login", {
-      method: "POST",
-      query: { phone, password },
-    });
 
-    try {
-      const uid = Number(res.json.uid.valueOf());
-      const username = String(res.json.username.valueOf());
-      const phone = String(res.json.phone.valueOf());
-      const login = { uid, username, phone };
-      return login;
-    } catch (err) {
-      console.error(err);
-      throw new Error("用户不存在或密码错误");
-    }
+    if (res.status == 401) throw new Error("用户不存在或密码错误");
+
+    return res.json;
+  },
+  async postLogin(query) {
+    const res = await mjFetch("/login", { method: "POST", query });
+
+    if (res.status == 401) throw new Error("用户不存在或密码错误");
+
+    return res.json;
   },
   async postInspect(pid, step, data) {
     return await mjFetch(`/p/${pid}/${step}`, { method: "POST", query: data });

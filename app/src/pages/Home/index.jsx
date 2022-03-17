@@ -1,22 +1,12 @@
-import { useState, useEffect } from "react";
-import { TouchableOpacity, Text, View, StyleSheet, Button } from "react-native";
-
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import AnnounceScreen from "./AnnounceScreen";
 import ProfileScreen from "./ProfileScreen";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { useLogin } from "@/contexts/LoginContext";
-
-import api from "@/js/api";
-
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
 
 export default function Home(props) {
-  const [login, setLogin] = useLogin();
-
   return (
     <Tab.Navigator backBehavior="none" initialRouteName="Welcome">
       <Tab.Screen
@@ -34,13 +24,11 @@ export default function Home(props) {
         options={{
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size }) => (
-            <View>
-              <MaterialCommunityIcons
-                name="qrcode-scan"
-                color={color}
-                size={35}
-              />
-            </View>
+            <MaterialCommunityIcons
+              name="qrcode-scan"
+              color={color}
+              size={35}
+            />
           ),
           tabBarOptions: { showLabel: false },
         }}
@@ -63,10 +51,3 @@ export default function Home(props) {
     </Tab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  scanButton: {
-    padding: 1,
-    borderRadius: 5,
-  },
-});

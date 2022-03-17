@@ -13,20 +13,22 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import { useLogin } from "@/contexts/LoginContext";
 
+import { setItemAsync, getItemAsync } from "expo-secure-store";
+
 import api from "@/js/api";
 
 export default function LoginScreen(props) {
+  const [login, setLogin] = useLogin();
   const [phone, setPhone] = useState("15655197127");
   const [password, setPassword] = useState("123456");
-  const [login, setLogin] = useLogin();
 
   useEffect(() => {
     props.navigation.setOptions({ title: "登录" });
   }, []);
 
-  const postLogin = async () => {
+  const getLogin = async () => {
     try {
-      setLogin(await api.postLogin(phone, password));
+      setLogin(await api.postLogin({ phone, password }));
       props.navigation.goBack();
     } catch (err) {
       alert(err.message);
@@ -46,7 +48,7 @@ export default function LoginScreen(props) {
           <Field title="密码">
             <Input value={password} onChange={setPassword} type="password" />
           </Field>
-          <Button title="登录" onPress={postLogin} />
+          <Button title="登录" onPress={getLogin} />
           <View
             style={{
               flex: 1,

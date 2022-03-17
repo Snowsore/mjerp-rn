@@ -35,6 +35,7 @@ const Group = (props) => {
 Group.Item = (props) => {
   const title = props.title ? props.title : null;
   const value = props.value ? props.value : null;
+  const onPress = props.onPress;
 
   const styles = StyleSheet.create({
     card: {
@@ -49,18 +50,45 @@ Group.Item = (props) => {
   });
 
   return (
-    <TouchableWithoutFeedback onPress={props.onPress}>
+    <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.card}>
         <View style={styles.content}>
           {title && <Text style={{ fontSize: 10 }}>{title}</Text>}
           {value && <Text style={{ fontSize: 20 }}>{value}</Text>}
           {props.children}
         </View>
-        {props.onPress && (
+        {onPress && (
           <View style={{ width: 30 }}>
             <MaterialCommunityIcons name="chevron-right" size={40} />
           </View>
         )}
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
+
+Group.Link = (props) => {
+  const title = props.title ? props.title : null;
+  const onPress = props.onPress;
+
+  const styles = StyleSheet.create({
+    card: {
+      marginHorizontal: 8,
+      marginVertical: 4,
+      flexDirection: "row",
+      alignItems: "center",
+    },
+  });
+
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={styles.card}>
+        <View style={{ flexGrow: 1 }}>
+          <Text style={{ fontSize: 20 }}>{title}</Text>
+        </View>
+        <View style={{ width: 30 }}>
+          <MaterialCommunityIcons name="chevron-right" size={40} />
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );

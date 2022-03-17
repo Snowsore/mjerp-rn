@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -22,16 +21,16 @@ export default function ProfileScreen(props) {
   const icon = (
     <MaterialCommunityIcons name={username ? "account" : `help`} size={30} />
   );
-  const type = username ? "none" : "navigate";
   const onPress = () => {
-    if (!username) navigation.push("Login");
+    if (!username) navigation.push("Login", { screen: "LoginScreen" });
+    else navigation.push("Login", { screen: "UserScreen" });
   };
 
   return (
     <ScrollView style={styles.container}>
       <Stack
         icon={<View style={styles.loginIcon}>{icon}</View>}
-        type={type}
+        type="navigate"
         onPress={onPress}
       >
         <View>

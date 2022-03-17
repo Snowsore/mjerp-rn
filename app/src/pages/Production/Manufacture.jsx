@@ -8,9 +8,7 @@ import {
   TextInput,
 } from "react-native";
 
-import { Picker } from "@react-native-picker/picker";
-
-import { Group, Input, Button, Flex, Field } from "@/components/mj";
+import { Input, Button, Flex, Field, Picker } from "@/components/mj";
 
 import api from "@/js/api";
 
@@ -18,6 +16,10 @@ export default function Manufacture(props) {
   const [type, setType] = useState("");
   const [number, setNumber] = useState(0);
   const [fail, setFail] = useState(0);
+
+  const info = props.route.params.info;
+  const id = info.id;
+  const step = info.step;
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -27,60 +29,38 @@ export default function Manufacture(props) {
 
   const styles = StyleSheet.create({
     container: {
+      flex: 1,
       backgroundColor: "#fff",
       padding: 36,
     },
   });
 
-  const post = () => {
-    // api.postProduct({
-    //   type,
-    //   number,
-    //   fail,
-    // });
-    props.navigation.goBack();
-    alert("Post success");
+  const post = async () => {
+    try {
+      await api.postProductInfo(id, step, { type, number, fail });
+      alert("更新成功");
+      props.navigation.replace("Infos", { pid: info.id });
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Flex gap={8}>
-        <View style={{ flex: 4 }}>
-          <Field title="机器型号">
-            <Picker selectedValue={type} onValueChange={setType}>
-              <Picker.Item label="A" value="a" />
-              <Picker.Item label="B" value="b" />
-              <Picker.Item label="C" value="c" />
-              <Picker.Item label="D" value="d" />
-              <Picker.Item label="A" value="a" />
-              <Picker.Item label="B" value="b" />
-              <Picker.Item label="C" value="c" />
-              <Picker.Item label="D" value="d" />
-              <Picker.Item label="A" value="a" />
-              <Picker.Item label="B" value="b" />
-              <Picker.Item label="C" value="c" />
-              <Picker.Item label="D" value="d" />
-              <Picker.Item label="A" value="a" />
-              <Picker.Item label="B" value="b" />
-              <Picker.Item label="C" value="c" />
-              <Picker.Item label="D" value="d" />
-            </Picker>
-          </Field>
-        </View>
+        <Field title="机器型号">
+          <Picker options={["1", "2", "3"]} value={type} onChange={setType} />
+        </Field>
         <Flex row gap={8}>
-          <View style={{ flex: 1 }}>
-            <Field title="数量">
-              <Input value={number} onChange={setNumber} type="number" />
-            </Field>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Field title="不良">
-              <Input value={fail} onChange={setFail} type="number" />
-            </Field>
-          </View>
+          <Field style={{ flex: 1 }} title="数量">
+            <Input value={number} onChange={setNumber} type="number" />
+          </Field>
+          <Field style={{ flex: 1 }} title="不良">
+            <Input value={fail} onChange={setFail} type="number" />
+          </Field>
         </Flex>
         <Button template="green" title="确认" onPress={post} />
       </Flex>
-    </ScrollView>
+    </View>
   );
 }

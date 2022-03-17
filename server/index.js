@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+const cors = require("cors");
+
 const session = require("express-session");
 
 const colors = require("colors");
@@ -9,15 +11,6 @@ colors.setTheme({
   GET: "green",
   POST: "blue",
 });
-
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {},
-  })
-);
 
 let users = [
   { uid: 1, phone: "15655197127", username: "郑润宇", password: "123456" },
@@ -98,10 +91,26 @@ let products = [
   },
 ];
 
+const isLogin = (req, res, next) => {
+  if (req.session.user) next();
+  else res.status(401).end();
+};
+
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    },
+  })
+);
+
 app.use((req, res, next) => {
   const method = colors[req.method](req.method.padEnd(4, " "));
-  const user = req.session.user ? `id: ${req.session.user.uid}` : "";
-  console.log(" - ", method, req.path, user);
+  const user = req.session.id;
+  console.log(" - ", method, req.path, req.query, user);
   next();
 });
 
@@ -109,13 +118,8 @@ app.get("/", (req, res) => {
   res.json({ msg: "Welcome MeiJinERP server" });
 });
 
-app.get("/login", (req, res) => {
-  const userData = req.session.userData;
-  if (userData) {
-    res.json({ msg: "已登录", userData });
-  } else {
-    res.status(401).end();
-  }
+app.get("/login", isLogin, (req, res) => {
+  res.json(req.session.user);
 });
 
 app.post("/login", (req, res) => {
@@ -149,10 +153,22 @@ app.get("/p/:id/:step", (req, res) => {
   res.json(ps[0]);
 });
 
+app.get("/test", (req, res) => {
+  res.end();
+});
+
 app.post("/p/:id/:step", (req, res) => {
-  console.log(req.query);
-  // datas[req.params.id][req.params.step][req.params.data] = req.query.value;
-  res.json({ msg: "Post success" });
+  const id = req.params.id;
+  const step = req.params.step;
+  products = products.map((x) => {
+    if (x.id == id && x.step == step) {
+      return { ...x, ...req.query };
+    } else {
+      return x;
+    }
+  });
+  console.log(products);
+  res.end();
 });
 
 app.get("/p/:id", (req, res) => {
