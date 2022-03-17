@@ -1,82 +1,78 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { setItemAsync, deleteItemAsync, getItemAsync } from "expo-secure-store";
 
-const Ajv = require("ajv/dist/jtd");
-const ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
-
-const schema = {
-  properties: {
-    foo: { type: "int32" },
-  },
-  optionalProperties: {
-    bar: { type: "string" },
-  },
-};
-
-const serialize = ajv.compileSerializer(schema);
-
-const data = {
-  foo: 1,
-  bar: "abc",
-};
-
-console.log(serialize(data));
-
-const parse = ajv.compileParser(schema);
-
-const json = '{"foo": 1, "bar": "abc"}';
-const invalidJson = '{"unknown": "abc"}';
-
-parseAndLog(json);
-parseAndLog(invalidJson);
-
-function parseAndLog(json) {
-  const data = parse(json);
-  if (data === undefined) {
-    console.log(parse.message);
-    console.log(parse.position);
-  } else {
-    console.log(data);
-  }
-}
+const Ajv = require("ajv");
+const ajv = new Ajv({ removeAdditional: true });
 
 const axios = require("axios");
-const req = axios.create({
-  baseURL: "http://192.168.2.10:8080",
-});
 
-// const mjFetch = async (path, params = {}) => {
-//   const method = params.method ? params.method : "GET";
-//   const credentials = "include";
-//   const url = queryString.stringifyUrl({
-//     url: `${HOST}${path}`,
-//     query: params.query,
-//   });
-//   const config = { method, credentials };
+const send = (() => {
+  const req = axios.create({
+    baseURL: "http://192.168.2.10:8080",
+  });
 
-//   try {
-//     const res = await fetch(url, config);
-//     const type = res.headers.get("content-type");
-//     const isJson = type?.includes("application/json");
-//     const json = isJson ? await res.json() : null;
-//     return { ...res, json };
-//   } catch (err) {
-//     console.error(err);
-//     throw new Error("连接服务器失败");
-//   }
-// };
+  const errorHandler = (err) => {
+    const code = err.response.status;
+    if (code == 401) throw new Error("用户名或密码错误");
+    console.error(err);
+    throw new Error("服务器连接失败");
+  };
+
+  const get = (...args) => req.get(...args).catch(errorHandler);
+  const post = (...args) => req.post(...args).catch(errorHandler);
+
+  return { get, post };
+})();
+
+const validates = {
+  announce: ajv.compile({
+    type: "array",
+    items: {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        context: { type: "string" },
+      },
+      required: ["title", "context"],
+    },
+  }),
+  login: ajv.compile({
+    type: "object",
+    properties: {
+      uid: { type: "number" },
+      username: { type: "string" },
+      phone: { type: "string" },
+    },
+    required: ["uid", "username", "phone"],
+  }),
+};
+
+export const getAnnounce = async () => {
+  const { data } = await send.get("/announce");
+  if (!validates.announce(data)) throw new Error("公告数据错误");
+  return data;
+};
+
+export const getLogin = async () => {
+  const { data } = await send.get("/login");
+  if (!validates.login(data)) throw new Error("用户数据错误");
+  return data;
+};
+
+export const postLogin = async (body) => {
+  const { data } = await send.post("/login", body);
+  console.log(data);
+  if (!validates.login(data)) throw new Error("用户数据错误");
+  return data;
+};
 
 export default {
-  async test() {
-    // const res = await mjFetch("/test");
-  },
-  async getAnnounce() {
-    const res = await req.get("/announce");
-    return res.data;
-  },
   async getProductInfos(pid) {
-    const res = await mjFetch(`/p/${pid}`);
+    try {
+      const res = await mjFetch(`/p/${pid}`);
+    } catch (err) {
+      throw new Error("无法连接服务器");
+    }
 
     try {
       const infos = res.json.map((x) => {

@@ -13,9 +13,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import { useLogin } from "@/contexts/LoginContext";
 
-import { setItemAsync, getItemAsync } from "expo-secure-store";
-
-import api from "@/js/api";
+import { postLogin } from "@/js/api";
 
 export default function LoginScreen(props) {
   const [login, setLogin] = useLogin();
@@ -28,7 +26,7 @@ export default function LoginScreen(props) {
 
   const getLogin = async () => {
     try {
-      setLogin(await api.postLogin({ phone, password }));
+      setLogin(await postLogin({ phone, password }));
       props.navigation.goBack();
     } catch (err) {
       alert(err.message);

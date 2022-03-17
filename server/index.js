@@ -96,6 +96,8 @@ const isLogin = (req, res, next) => {
   else res.status(401).end();
 };
 
+app.use(express.json());
+
 app.use(
   session({
     secret: "NyanNyanSuperCat",
@@ -110,7 +112,7 @@ app.use(
 app.use((req, res, next) => {
   const method = colors[req.method](req.method.padEnd(4, " "));
   const user = req.session.id;
-  console.log(" - ", method, req.path, req.query, user);
+  console.log(" - ", method, req.path, req.body, user);
   next();
 });
 
@@ -123,8 +125,8 @@ app.get("/login", isLogin, (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const phone = req.query.phone;
-  const password = req.query.password;
+  const phone = req.body.phone;
+  const password = req.body.password;
 
   const user = users.filter(
     (user) => user.phone == phone && user.password == password

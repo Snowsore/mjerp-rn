@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Text, View, Button, ScrollView } from "react-native";
 
-import api from "@/js/api";
+import { getAnnounce, getLogin } from "@/js/api";
 
 import { useLogin } from "@/contexts/LoginContext";
 
@@ -12,12 +12,11 @@ export default function AnnounceScreen(props) {
 
   useEffect(async () => {
     try {
-      const login = await api.getLogin();
-      if (login) setLogin(login);
+      setLogin(await getLogin());
     } catch (err) {}
 
     try {
-      setAnnounceList(await api.getAnnounce());
+      setAnnounceList(await getAnnounce());
     } catch (err) {
       alert(err.message);
     }
