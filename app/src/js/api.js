@@ -2,8 +2,47 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { setItemAsync, deleteItemAsync, getItemAsync } from "expo-secure-store";
 
+const Ajv = require("ajv/dist/jtd");
+const ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
+
+const schema = {
+  properties: {
+    foo: { type: "int32" },
+  },
+  optionalProperties: {
+    bar: { type: "string" },
+  },
+};
+
+const serialize = ajv.compileSerializer(schema);
+
+const data = {
+  foo: 1,
+  bar: "abc",
+};
+
+console.log(serialize(data));
+
+const parse = ajv.compileParser(schema);
+
+const json = '{"foo": 1, "bar": "abc"}';
+const invalidJson = '{"unknown": "abc"}';
+
+parseAndLog(json);
+parseAndLog(invalidJson);
+
+function parseAndLog(json) {
+  const data = parse(json);
+  if (data === undefined) {
+    console.log(parse.message);
+    console.log(parse.position);
+  } else {
+    console.log(data);
+  }
+}
+
 const axios = require("axios");
-const userRequest = axios.create({
+const req = axios.create({
   baseURL: "http://192.168.2.10:8080",
 });
 
@@ -33,7 +72,7 @@ export default {
     // const res = await mjFetch("/test");
   },
   async getAnnounce() {
-    const res = await axios.get("/announce");
+    const res = await req.get("/announce");
     return res.data;
   },
   async getProductInfos(pid) {

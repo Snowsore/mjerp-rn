@@ -98,7 +98,7 @@ const isLogin = (req, res, next) => {
 
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: "NyanNyanSuperCat",
     resave: false,
     saveUninitialized: false,
     cookie: {

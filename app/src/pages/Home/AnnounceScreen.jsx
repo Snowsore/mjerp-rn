@@ -30,12 +30,7 @@ export default function AnnounceScreen(props) {
     </Announce>
   ));
 
-  return (
-    <ScrollView style={{ padding: 8 }}>
-      {AnnounceComps}
-      <Button title="test" onPress={async () => await api.test()} />
-    </ScrollView>
-  );
+  return <ScrollView style={{ padding: 8 }}>{AnnounceComps}</ScrollView>;
 }
 
 const Announce = ({ children }) => {
