@@ -1,18 +1,11 @@
 import { useState, useEffect } from "react";
-import {
-  Text,
-  ScrollView,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import { Input, Button, Flex, Field, Picker } from "@/components/mj";
 
 import api from "@/js/api";
 
-export default function Manufacture(props) {
+export default function ManufactureScreen(props) {
   const [type, setType] = useState("");
   const [number, setNumber] = useState(0);
   const [fail, setFail] = useState(0);

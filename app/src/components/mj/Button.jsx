@@ -8,28 +8,18 @@ export default function Button(props) {
     container: {
       padding: 10,
       borderRadius: 4,
+      backgroundColor: "crimson",
     },
     text: {
       fontSize: 20,
       textAlign: "center",
-    },
-    green: {
-      backgroundColor: "#3c3",
-      color: "#fff",
-    },
-    blue: {
-      backgroundColor: "#35e",
-      color: "#fff",
+      color: "white",
     },
   });
 
-  const color = styles[props.template] ? styles[props.template] : styles.blue;
-
   return (
-    <TouchableOpacity onPress={props.onPress} style={[styles.container, color]}>
-      <Text style={[styles.text, color, { backgroundColor: "transparent" }]}>
-        {props.title}
-      </Text>
+    <TouchableOpacity onPress={props.onPress} style={styles.container}>
+      <Text style={styles.text}>{props.children}</Text>
     </TouchableOpacity>
   );
 }

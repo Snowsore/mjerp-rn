@@ -5,7 +5,7 @@ import { Input, Button, Flex, Field } from "@/components/mj";
 
 import { postProductInfo } from "@/js/api";
 
-export default function Inspect(props) {
+export default function InspectScreen(props) {
   const [comment, setComment] = useState("");
 
   const params = props.route.params;

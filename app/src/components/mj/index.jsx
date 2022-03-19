@@ -6,5 +6,18 @@ import Flex from "./Flex";
 import Field from "./Field";
 import Ifdiv from "./Ifdiv";
 import Picker from "./Picker";
+import Label from "./Label";
+import Modal from "./Modal";
 
-export { Button, Input, Frame, Group, Flex, Field, Ifdiv, Picker };
+export {
+  Button,
+  Input,
+  Frame,
+  Group,
+  Flex,
+  Field,
+  Ifdiv,
+  Picker,
+  Label,
+  Modal,
+};

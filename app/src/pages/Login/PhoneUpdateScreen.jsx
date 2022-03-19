@@ -23,7 +23,7 @@ export default function NameUpdateScreen(props) {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#fff", padding: 30 }}>
+    <View style={{ padding: 30 }}>
       <Flex gap={8}>
         <Field title="手机号">
           <Input value={phone} onChange={setPhone} />

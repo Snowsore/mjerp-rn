@@ -11,18 +11,9 @@ export default function Home(props) {
       backBehavior="none"
       initialRouteName="Welcome"
       screenOptions={{
-        headerStyle: {
-          backgroundColor: "#f4511e",
-        },
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontWeight: "bold",
-        },
-        tabBarActiveTintColor: "#000",
-        tabBarInactiveTintColor: "#fff",
-        tabBarActiveBackgroundColor: "#fff",
-        tabBarInactiveBackgroundColor: "#f4511e",
+        tabBarActiveTintColor: "#E3170A",
       }}
+      sceneContainerStyle={{ backgroundColor: "white" }}
     >
       <Tab.Screen
         name="Welcome"

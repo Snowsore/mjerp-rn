@@ -1,14 +1,9 @@
 import { useEffect } from "react";
 
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  Switch,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+import { Label } from "@/components/mj";
 
 import { useLogin } from "@/contexts/LoginContext";
 
@@ -16,16 +11,13 @@ export default function ProfileScreen(props) {
   const [login, setLogin] = useLogin();
   const navigation = props.navigation;
 
-  const { username, phone, uid } = login;
+  const icon = login.username ? "account" : "help";
+  const name = login.username ? login.username : "未登录";
+  const phone = login.username ? `电话: ${login.phone}` : "点击查看登录信息";
 
-  const nameString = username ? username : "未登录";
-  const phoneString = username ? `电话: ${phone}` : "点击查看登录信息";
-  const icon = (
-    <MaterialCommunityIcons name={username ? "account" : `help`} size={30} />
-  );
   const onPress = () => {
-    if (!username) navigation.push("Login", { screen: "LoginScreen" });
-    else navigation.push("Login", { screen: "UserScreen" });
+    if (login.username) navigation.push("Login", { screen: "UserScreen" });
+    else navigation.push("Login", { screen: "LoginScreen" });
   };
 
   useEffect(() => {
@@ -33,105 +25,54 @@ export default function ProfileScreen(props) {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
-      <Stack
-        icon={<View style={styles.loginIcon}>{icon}</View>}
-        type="navigate"
-        onPress={onPress}
-      >
+    <View style={styles.container}>
+      <Item onPress={onPress}>
+        <Icon name={icon} />
         <View>
-          <Text style={styles.loginName}>{nameString}</Text>
-          <Text>{phoneString}</Text>
+          <Label size="xl">{name}</Label>
+          <Label>{phone}</Label>
         </View>
-      </Stack>
-      {/* <Stack
-        icon={
-          <View style={styles.iconContainer}>
-            <MaterialCommunityIcons name="home" size={30} />
-          </View>
-        }
-        type="switch"
-      >
-        <Text>开关</Text>
-      </Stack> */}
-      <Divider />
-      <Stack
-        icon={
-          <View style={styles.iconContainer}>
-            <MaterialCommunityIcons name="exclamation" size={30} />
-          </View>
-        }
-        type="navigation"
-        onPress={() => navigation.push("About")}
-      >
-        <Text>关于</Text>
-      </Stack>
-    </ScrollView>
+      </Item>
+      <Item type="navigation" onPress={() => navigation.push("About")}>
+        <Label>关于</Label>
+      </Item>
+    </View>
   );
 }
 
-function Divider(props) {
-  return <View style={styles.divider}></View>;
-}
-
-function Stack(props) {
-  const getType = (type) => {
-    switch (type) {
-      case "switch":
-        return <Switch />;
-      case "navigate":
-        return <MaterialCommunityIcons name="chevron-right" size={40} />;
-      case "none":
-        return <></>;
-    }
-  };
-
+const Item = (props) => {
   return (
     <TouchableWithoutFeedback onPress={props.onPress}>
-      <View style={styles.stackContainer}>
-        <View style={styles.stackIcon}>{props.icon}</View>
-        <Text style={styles.stackContext}>{props.children}</Text>
-        <View style={styles.stackHandler}>{getType(props.type)}</View>
-      </View>
+      <View style={styles.stackContainer}>{props.children}</View>
     </TouchableWithoutFeedback>
   );
-}
+};
+
+const Icon = (props) => {
+  return (
+    <View style={styles.icon}>
+      <MaterialCommunityIcons name={props.name} size={30} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {},
-  loginIcon: {
-    width: 60,
-    height: 60,
-    backgroundColor: "#ccc",
+  container: { padding: 10 },
+  stackContainer: {
+    padding: 14,
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 100,
-    borderWidth: 2,
+    borderBottomWidth: 1,
+    borderColor: "lightgrey",
   },
-  loginName: { fontSize: 20 },
-  iconContainer: {
-    justifyContent: "center",
-    alignItems: "center",
+  icon: {
     width: 40,
     height: 40,
-    padding: 4,
-    backgroundColor: "#ccc",
-    borderRadius: 50,
-  },
-  stackContainer: {
+    marginRight: 20,
+
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row",
-    borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderRadius: 2000,
+    borderWidth: 1,
   },
-  stackIcon: {
-    alignItems: "center",
-    width: 80,
-    paddingVertical: 8,
-    marginLeft: 8,
-  },
-  stackContext: { flexGrow: 1 },
-  stackHandler: { marginRight: 8, width: 40, alignItems: "center" },
-  divider: { padding: 4, backgroundColor: "#ccc" },
 });

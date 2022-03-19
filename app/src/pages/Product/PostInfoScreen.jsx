@@ -30,7 +30,7 @@ export default function PostInfo(props) {
 
   const onPress = async () => {
     try {
-      await api.postProductInfo(id, step, { [field]: value });
+      await api.postProductInfoScreen(id, step, { [field]: value });
       alert("更新成功");
       props.navigation.replace("Infos", { pid: info.id });
     } catch (err) {

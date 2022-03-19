@@ -67,31 +67,4 @@ Group.Item = (props) => {
   );
 };
 
-Group.Link = (props) => {
-  const title = props.title ? props.title : null;
-  const onPress = props.onPress;
-
-  const styles = StyleSheet.create({
-    card: {
-      marginHorizontal: 8,
-      marginVertical: 4,
-      flexDirection: "row",
-      alignItems: "center",
-    },
-  });
-
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.card}>
-        <View style={{ flexGrow: 1 }}>
-          <Text style={{ fontSize: 20 }}>{title}</Text>
-        </View>
-        <View style={{ width: 30 }}>
-          <MaterialCommunityIcons name="chevron-right" size={40} />
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
-  );
-};
-
 export default Group;

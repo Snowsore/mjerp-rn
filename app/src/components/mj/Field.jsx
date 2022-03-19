@@ -4,9 +4,6 @@ import { StyleSheet, View, Text } from "react-native";
 function Field(props) {
   const title = props.title;
   const styles = StyleSheet.create({
-    container: {
-      backgroundColor: "#fff",
-    },
     inputContainer: {
       padding: 10,
       paddingTop: 14,

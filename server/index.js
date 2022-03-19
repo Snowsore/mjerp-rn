@@ -132,12 +132,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/announce", (req, res) => {
-  res.json([
-    {
-      title: "欢迎使用美进ERP系统",
-      context: "目前为内侧阶段",
-    },
-  ]);
+  res.json({
+    title: "欢迎使用美进ERP系统",
+    context: "目前为内侧阶段",
+  });
 });
 
 app.get("/login", isLogin, (req, res) => {
@@ -161,7 +159,7 @@ app.post("/login", (req, res) => {
   }
 });
 
-app.get("/p/:id", isLogin, (req, res) => {
+app.get("/p/:id", (req, res) => {
   const id = req.params.id;
   const ps = products.filter((p) => p.id == id).sort((a, b) => a.step > b.step);
   res.json(ps);
@@ -175,18 +173,13 @@ app.get("/p/:id/:step", (req, res) => {
 app.post("/p/:id/:step", (req, res) => {
   const id = req.params.id;
   const step = req.params.step;
-  const d =
-    req.body.comment != undefined
-      ? { inspector: req.session.login.username }
-      : {};
   products = products.map((x) => {
     if (x.id == id && x.step == step) {
-      return { ...x, ...req.body, ...d };
+      return { ...x, ...req.body };
     } else {
       return x;
     }
   });
-  console.log(products.filter((x) => x.id == id && x.step == step));
   res.end();
 });
 

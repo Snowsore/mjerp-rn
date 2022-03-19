@@ -1,51 +1,61 @@
 import { useState, useEffect } from "react";
-import { Text, View, Button, ScrollView } from "react-native";
+import { Text, View, ScrollView, StyleSheet } from "react-native";
 
-import { getAnnounce, getLogin, famek } from "@/js/api";
+import { getAnnounce, getLogin } from "@/js/api";
 
 import { useLogin } from "@/contexts/LoginContext";
 
 export default function AnnounceScreen(props) {
   const [login, setLogin] = useLogin();
 
-  const [announceList, setAnnounceList] = useState([]);
+  const [announce, setAnnounce] = useState([]);
 
   useEffect(async () => {
     props.navigation.setOptions({ title: "公告页面" });
+
+    props.navigation.push("Product", {
+      screen: "InfosScreen",
+      params: { pid: "2201153101" },
+    });
 
     try {
       setLogin(await getLogin());
     } catch (err) {}
 
     try {
-      setAnnounceList(await getAnnounce());
+      setAnnounce(await getAnnounce());
     } catch (err) {
       alert(err.message);
     }
   }, []);
 
-  const AnnounceComps = announceList.map((announce, index) => (
-    <Announce key={`announce_${index}`}>
-      <Announce.Title>{announce.title}</Announce.Title>
-      <Announce.Context>{announce.context}</Announce.Context>
-    </Announce>
-  ));
-
   return (
-    <ScrollView style={{ backgroundColor: "#E1E6E1", padding: 8 }}>
-      {AnnounceComps}
+    <ScrollView style={styles.container}>
+      <Announce>
+        <Title>{announce.title}</Title>
+        <Context>{announce.context}</Context>
+      </Announce>
     </ScrollView>
   );
 }
 
+const styles = StyleSheet.create({
+  container: { padding: 20 },
+  announce: {
+    marginBottom: 20,
+  },
+  title: { fontSize: 30, fontWeight: "bold" },
+  context: { fontSize: 20 },
+});
+
 const Announce = ({ children }) => {
-  return <View style={{ padding: 8, borderBottomWidth: 1 }}>{children}</View>;
+  return <View style={styles.announce}>{children}</View>;
 };
 
-Announce.Title = ({ children }) => {
-  return <Text style={{ fontSize: 30, fontWeight: "bold" }}>{children}</Text>;
+const Title = ({ children }) => {
+  return <Text style={styles.title}>{children}</Text>;
 };
 
-Announce.Context = ({ children }) => {
-  return <Text style={{ fontSize: 20 }}>{children}</Text>;
+const Context = ({ children }) => {
+  return <Text style={styles.context}>{children}</Text>;
 };

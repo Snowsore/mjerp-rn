@@ -1,11 +1,4 @@
-import { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { useEffect } from "react";
 
 import { Group, Frame } from "@/components/mj";
 

@@ -1,12 +1,4 @@
-import { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  Switch,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
 export default function AboutScreen(props) {
   const styles = StyleSheet.create({
