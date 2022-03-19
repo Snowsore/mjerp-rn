@@ -12,17 +12,18 @@ import { useProduct } from "@/contexts/ProductContext";
 
 export default function InfosScreen(props) {
   const [product, setProduct] = useProduct();
-  const pid = props.route.params.pid;
 
   useEffect(async () => {
     try {
-      setProduct(await getProductInfos(pid));
+      const id = props.route.params.pid;
+      setProduct(await getProductInfos(id));
 
       props.navigation.setOptions({
-        title: `单号：${pid}`,
+        title: `单号：${id}`,
       });
     } catch (err) {
-      alert(err.message);
+      console.error(err);
+      alert("未找到产品信息");
       props.navigation.goBack();
     }
   }, []);
@@ -64,8 +65,12 @@ const MenuInfo = (props) => {
 
   const workerLine = (
     <View style={styles.workerLine}>
-      {workerComp}
-      {dateComp}
+      {info.worker != "" && (
+        <>
+          {workerComp}
+          {dateComp}
+        </>
+      )}
     </View>
   );
 

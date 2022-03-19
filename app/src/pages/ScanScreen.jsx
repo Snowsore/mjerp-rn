@@ -22,14 +22,11 @@ export default function ScanScreen({ navigation }) {
   }
 
   const handleBarCodeScanned = ({ type, data }) => {
-    try {
-      const json = JSON.parse(data);
-      const pid = String(json.pid.valueOf());
-      const params = { pid };
-      navigation.replace("Production", { screen: "Infos", params });
-    } catch (err) {
-      alert("请扫描正确的二维码");
-    }
+    const json = JSON.parse(data);
+    navigation.replace("Product", {
+      screen: "InfosScreen",
+      params: { pid: json.pid },
+    });
   };
 
   return (

@@ -13,11 +13,6 @@ export default function AnnounceScreen(props) {
   useEffect(async () => {
     props.navigation.setOptions({ title: "公告页面" });
 
-    props.navigation.push("Product", {
-      screen: "InfosScreen",
-      params: { pid: "2201153101" },
-    });
-
     try {
       setLogin(await getLogin());
     } catch (err) {}

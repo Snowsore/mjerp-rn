@@ -46,7 +46,7 @@ export default function LoginScreen(props) {
         <Field title="密码">
           <Input value={password} onChange={setPassword} type="password" />
         </Field>
-        <Button title="登录" onPress={getLogin} />
+        <Button onPress={getLogin}>登录</Button>
         <View
           style={{
             flex: 1,

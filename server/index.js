@@ -159,23 +159,27 @@ app.post("/login", (req, res) => {
   }
 });
 
-app.get("/p/:id", (req, res) => {
+app.get("/p/:id", isLogin, (req, res) => {
   const id = req.params.id;
   const ps = products.filter((p) => p.id == id).sort((a, b) => a.step > b.step);
   res.json(ps);
 });
 
-app.get("/p/:id/:step", (req, res) => {
-  const ps = products.filter((p) => p.id == req.params.id);
-  res.json(ps[0]);
-});
-
-app.post("/p/:id/:step", (req, res) => {
+app.post("/p/:id/:step", isLogin, (req, res) => {
   const id = req.params.id;
   const step = req.params.step;
+  const user =
+    req.body.comment != undefined
+      ? { inspector: req.session.login.username }
+      : { worker: req.session.login.username, date: Date.now() };
+  console.log(user);
   products = products.map((x) => {
     if (x.id == id && x.step == step) {
-      return { ...x, ...req.body };
+      return {
+        ...x,
+        ...req.body,
+        ...user,
+      };
     } else {
       return x;
     }

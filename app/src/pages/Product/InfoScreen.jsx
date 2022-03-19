@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { Text, View, StyleSheet } from "react-native";
 
 import dateFormat from "@/js/dateformat";
@@ -7,13 +7,16 @@ import { Group, Button, Modal, Field, Flex, Input } from "@/components/mj";
 
 import { useProduct } from "@/contexts/ProductContext";
 
-import { postProductInfo } from "@/js/api";
+import { getProductInfos, postProductInfo } from "@/js/api";
+
+const InfoContext = createContext();
 
 export default function InfoScreen(props) {
   const [product, setProduct] = useProduct();
   const step = props.route.params.step;
   const info = product[step];
-  const date = dateFormat(info.date, "yyyy/mm/dd HH:MM dddd");
+
+  const fDate = dateFormat(info.date, "yyyy/mm/dd HH:MM dddd");
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -21,93 +24,63 @@ export default function InfoScreen(props) {
     });
   }, []);
 
-  const styles = StyleSheet.create({
-    container: {
-      backgroundColor: "#eee",
-      padding: 8,
-    },
-    session: {
-      marginBottom: 8,
-      borderRadius: 8,
-      borderWidth: 1,
-      backgroundColor: "#fff",
-    },
-  });
-
-  const onSubmit = (field) => {
-    return async (value) => {
-      try {
-        const data = { [field]: value };
-        await postProductInfo(info.id, step, data);
-
-        setProduct(
-          product.map((info, index) => {
-            if (index == step) return { ...info, ...data };
-            else return info;
-          })
-        );
-      } catch (err) {
-        alert(err);
-      }
-    };
+  const baseStats = () => {
+    return (
+      <Group>
+        <Group.Item title="型号" value={info.type} />
+      </Group>
+    );
   };
 
-  const subMachine = onSubmit("machine");
-  const subNumber = onSubmit("number");
-  const subFail = onSubmit("fail");
-  const subComment = onSubmit("comment");
+  const workStats = () => {
+    if (!info.worker) return <ManufacItem />;
+    return (
+      <Group>
+        <Group.Item title="生产人" value={info.worker} />
+        <Group.Item title="日期" value={fDate} />
+        <ModalItem title="车间号" field="machine" />
+        <ModalItem title="数量" field="number" />
+        <ModalItem title="不良" field="fail" />
+      </Group>
+    );
+  };
 
-  const baseStats = (
-    <Group>
-      <Group.Item title="型号" value={info.type} />
-    </Group>
-  );
-
-  const workStats = info.worker ? (
-    <Group>
-      <Group.Item title="生产人" value={info.worker} />
-      {/* <DateItem /> */}
-      <MachineItem step={step} />
-      {/* <NumberItem />
-      <FailItem /> */}
-    </Group>
-  ) : (
-    <ManufacItem />
-  );
-
-  const inspecStats = info.inspector ? (
-    <Group>{/* <CommentItem /> */}</Group>
-  ) : (
-    <InspecItem />
-  );
+  const inspectStats = () => {
+    if (!info.worker) return null;
+    if (!info.inspector) return <InspecItem />;
+    return (
+      <Group>
+        <ModalItem title="备注" field="comment" />
+      </Group>
+    );
+  };
 
   return (
-    <View style={styles.container}>
-      {baseStats}
-      {workStats}
-      {info.worker != "" && inspecStats}
-    </View>
+    <InfoContext.Provider value={info}>
+      <View style={styles.container}>
+        {baseStats()}
+        {workStats()}
+        {inspectStats()}
+      </View>
+    </InfoContext.Provider>
   );
 }
 
-const InputItem = (props) => {
+const ModalItem = (props) => {
   const [product, setProduct] = useProduct();
-  const step = props.route.params.step;
-  const info = product[step];
-
-  const [value, setValue] = useState(info[props.field]);
+  const info = useContext(InfoContext);
   const [modal, setModal] = useState(false);
+  const toggleModal = () => setModal(!modal);
 
-  const toggleModal = () => {
-    setModal(!modal);
-  };
+  const [value, setValue] = useState(String(info[props.field]));
 
   const postRequest = async () => {
     try {
-      await postProductInfo(info.id, step, { machine: value });
       toggleModal();
+      await postProductInfo(info.id, info.step, { [props.field]: value });
+      setProduct(await getProductInfos(info.id));
     } catch (err) {
-      alert(err);
+      alert(err.message);
     }
   };
 
@@ -115,58 +88,13 @@ const InputItem = (props) => {
     <>
       <Group.Item
         title={props.title}
-        value={props.value}
+        value={info[props.field]}
         onPress={toggleModal}
       />
       <Modal show={modal} onBack={toggleModal}>
         <Flex gap={8}>
           <Field title={props.title}>
-            <Input
-              value={value}
-              onChange={setValue}
-              type={typeof props.value}
-              autoFocus
-            />
-          </Field>
-          <Button onPress={postRequest}>更改</Button>
-        </Flex>
-      </Modal>
-    </>
-  );
-};
-
-const MachineItem = (props) => {
-  const [product, setProduct] = useProduct();
-  const step = props.step;
-  const info = product[step];
-  const [value, setValue] = useState(info.machine);
-  const [modal, setModal] = useState(false);
-
-  const toggleModal = () => {
-    setModal(!modal);
-  };
-
-  const postRequest = async () => {
-    try {
-      await postProductInfo(info.id, step, { machine: value });
-      toggleModal();
-    } catch (err) {
-      alert(err);
-    }
-  };
-
-  return (
-    <>
-      <Group.Item title="车间号" value={info.machine} onPress={toggleModal} />
-      <Modal show={modal} onBack={toggleModal}>
-        <Flex gap={8}>
-          <Field title="车间号">
-            <Input
-              value={value}
-              onChange={setValue}
-              type={typeof props.value}
-              autoFocus
-            />
+            <Input value={value} onChange={setValue} autoFocus />
           </Field>
           <Button onPress={postRequest}>更改</Button>
         </Flex>
@@ -176,16 +104,27 @@ const MachineItem = (props) => {
 };
 
 const ManufacItem = (props) => {
-  const [value, setValue] = useState(String(props.value));
+  const [product, setProduct] = useProduct();
+  const info = useContext(InfoContext);
   const [modal, setModal] = useState(false);
+  const toggleModal = () => setModal(!modal);
 
-  const toggleModal = () => {
-    setModal(!modal);
-  };
+  const [machine, setMachine] = useState("");
+  const [number, setNumber] = useState("");
+  const [fail, setFail] = useState("");
 
   const postRequest = async () => {
-    await props.onSubmit(value);
-    toggleModal();
+    try {
+      toggleModal();
+      await postProductInfo(info.id, info.step, {
+        machine: machine,
+        number: number,
+        fail: fail,
+      });
+      setProduct(await getProductInfos(info.id));
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   return (
@@ -194,13 +133,14 @@ const ManufacItem = (props) => {
       <Button onPress={toggleModal}>添加</Button>
       <Modal show={modal} onBack={toggleModal}>
         <Flex gap={8}>
-          <Field title={props.title}>
-            <Input
-              value={value}
-              onChange={setValue}
-              type={typeof props.value}
-              autoFocus
-            />
+          <Field title="车间号">
+            <Input value={machine} onChange={setMachine} autoFocus />
+          </Field>
+          <Field title="数量">
+            <Input value={number} onChange={setNumber} type="number" />
+          </Field>
+          <Field title="不良">
+            <Input value={fail} onChange={setFail} type="number" />
           </Field>
           <Button onPress={postRequest}>更改</Button>
         </Flex>
@@ -210,16 +150,23 @@ const ManufacItem = (props) => {
 };
 
 const InspecItem = (props) => {
-  const [value, setValue] = useState(String(props.value));
+  const [product, setProduct] = useProduct();
+  const info = useContext(InfoContext);
   const [modal, setModal] = useState(false);
+  const toggleModal = () => setModal(!modal);
 
-  const toggleModal = () => {
-    setModal(!modal);
-  };
+  const [comment, setComment] = useState("");
 
   const postRequest = async () => {
-    await props.onSubmit(value);
-    toggleModal();
+    try {
+      toggleModal();
+      await postProductInfo(info.id, info.step, {
+        comment: comment,
+      });
+      setProduct(await getProductInfos(info.id));
+    } catch (err) {
+      alert();
+    }
   };
 
   return (
@@ -228,10 +175,10 @@ const InspecItem = (props) => {
       <Button onPress={toggleModal}>审批</Button>
       <Modal show={modal} onBack={toggleModal}>
         <Flex gap={8}>
-          <Field title={props.title}>
+          <Field title="备注">
             <Input
-              value={value}
-              onChange={setValue}
+              value={comment}
+              onChange={setComment}
               type={typeof props.value}
               autoFocus
             />
@@ -242,3 +189,10 @@ const InspecItem = (props) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#eee",
+    padding: 8,
+  },
+});
