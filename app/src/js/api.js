@@ -8,14 +8,22 @@ const send = (() => {
   });
 
   const errorHandler = (err) => {
-    const code = err.response.status;
-    if (code == 401) throw new Error("用户名或密码错误");
-    if (code == 403) throw new Error("登录信息已过期，请重新登录");
-    throw new Error("服务器连接失败");
+    if (err.response) {
+      const code = err.response.status;
+      if (code == 401) throw new Error("用户名或密码错误");
+      if (code == 403) throw new Error("登录信息已过期，请重新登录");
+      throw err;
+    } else {
+      throw new Error("服务器连接失败");
+    }
   };
 
-  const get = (...args) => req.get(...args).catch(errorHandler);
-  const post = (...args) => req.post(...args).catch(errorHandler);
+  const get = async (...args) => {
+    return await req.get(...args).catch(errorHandler);
+  };
+  const post = async (...args) => {
+    return await req.post(...args).catch(errorHandler);
+  };
 
   return { get, post };
 })();

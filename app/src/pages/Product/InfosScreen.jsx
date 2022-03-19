@@ -22,8 +22,7 @@ export default function InfosScreen(props) {
         title: `单号：${id}`,
       });
     } catch (err) {
-      console.error(err);
-      alert("未找到产品信息");
+      alert(err.message);
       props.navigation.goBack();
     }
   }, []);
@@ -107,8 +106,11 @@ const MenuInfo = (props) => {
 const Badge = (props) => {
   const styles = StyleSheet.create({
     container: {
+      width: 50,
       marginRight: 8,
-      paddingHorizontal: 8,
+    },
+    text: {
+      textAlign: "center",
     },
     gray: { backgroundColor: "#ccc" },
     green: { backgroundColor: "#8ca" },
@@ -118,8 +120,8 @@ const Badge = (props) => {
   const color = styles[props.template] ? styles[props.template] : {};
 
   return (
-    <View style={{ ...styles.container, ...color }}>
-      <Text>{props.children}</Text>
+    <View style={[styles.container, color]}>
+      <Text style={styles.text}>{props.children}</Text>
     </View>
   );
 };

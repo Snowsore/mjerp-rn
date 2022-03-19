@@ -33,7 +33,7 @@ export default function ProfileScreen(props) {
           <Label>{phone}</Label>
         </View>
       </Item>
-      <Item type="navigation" onPress={() => navigation.push("About")}>
+      <Item type="navigation" onPress={() => navigation.push("AboutScreen")}>
         <Label>关于</Label>
       </Item>
     </View>

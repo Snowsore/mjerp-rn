@@ -39,8 +39,8 @@ export default function InfoScreen(props) {
         <Group.Item title="生产人" value={info.worker} />
         <Group.Item title="日期" value={fDate} />
         <ModalItem title="车间号" field="machine" />
-        <ModalItem title="数量" field="number" />
-        <ModalItem title="不良" field="fail" />
+        <ModalItem title="数量" field="number" type="number" />
+        <ModalItem title="不良" field="fail" type="number" />
       </Group>
     );
   };
@@ -50,6 +50,7 @@ export default function InfoScreen(props) {
     if (!info.inspector) return <InspecItem />;
     return (
       <Group>
+        <Group.Item title="审批人" value={info.inspector} />
         <ModalItem title="备注" field="comment" />
       </Group>
     );
@@ -72,7 +73,7 @@ const ModalItem = (props) => {
   const [modal, setModal] = useState(false);
   const toggleModal = () => setModal(!modal);
 
-  const [value, setValue] = useState(String(info[props.field]));
+  const [value, setValue] = useState(info[props.field]);
 
   const postRequest = async () => {
     try {
@@ -94,7 +95,12 @@ const ModalItem = (props) => {
       <Modal show={modal} onBack={toggleModal}>
         <Flex gap={8}>
           <Field title={props.title}>
-            <Input value={value} onChange={setValue} autoFocus />
+            <Input
+              value={value}
+              onChange={setValue}
+              type={props.type}
+              autoFocus
+            />
           </Field>
           <Button onPress={postRequest}>更改</Button>
         </Flex>
@@ -165,7 +171,7 @@ const InspecItem = (props) => {
       });
       setProduct(await getProductInfos(info.id));
     } catch (err) {
-      alert();
+      alert(err.message);
     }
   };
 
