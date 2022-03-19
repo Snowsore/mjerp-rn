@@ -14,6 +14,7 @@ colors.setTheme({
 
 let users = [
   { uid: 1, phone: "15655197127", username: "郑润宇", password: "123456" },
+  { uid: 2, phone: "123", username: "测试人员", password: "123" },
 ];
 
 let products = [
