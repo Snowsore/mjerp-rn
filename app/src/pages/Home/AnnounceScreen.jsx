@@ -26,10 +26,7 @@ export default function AnnounceScreen(props) {
 
   return (
     <ScrollView style={styles.container}>
-      <Announce>
-        <Title>{announce.title}</Title>
-        <Context>{announce.context}</Context>
-      </Announce>
+      <Announce title={announce.title}>{announce.context}</Announce>
     </ScrollView>
   );
 }
@@ -43,14 +40,11 @@ const styles = StyleSheet.create({
   context: { fontSize: 20 },
 });
 
-const Announce = ({ children }) => {
-  return <View style={styles.announce}>{children}</View>;
-};
-
-const Title = ({ children }) => {
-  return <Text style={styles.title}>{children}</Text>;
-};
-
-const Context = ({ children }) => {
-  return <Text style={styles.context}>{children}</Text>;
+const Announce = (props) => {
+  return (
+    <View style={styles.announce}>
+      <Text style={styles.title}>{props.title}</Text>
+      <Text style={styles.context}>{props.children}</Text>
+    </View>
+  );
 };
