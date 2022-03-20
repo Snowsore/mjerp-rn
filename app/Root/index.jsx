@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { navigation } from "@refs/RootNavigation";
 
 import Home from "./Home";
 import Login from "./Login";
@@ -9,7 +10,6 @@ import ScanScreen from "./ScanScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { LoginProvider } from "@contexts/LoginContext";
 import { ThemeProvider } from "@contexts/ThemeContext";
-import { NavigationProvider } from "@contexts/NavigationContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,8 +17,8 @@ export default function Root(props) {
   return (
     <ThemeProvider>
       <LoginProvider>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
+        <NavigationContainer ref={navigation}>
+          <Stack.Navigator initialRouteName="Login">
             <Stack.Group screenOptions={{ headerShown: false }}>
               <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="Login" component={Login} />

@@ -1,23 +1,20 @@
 import { useEffect } from "react";
-
 import { View, TouchableWithoutFeedback } from "react-native";
+import { createNavigationContainerRef } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { navigation } from "@refs/RootNavigation";
 
 import { Label } from "@components";
 
 import { useLogin } from "@contexts/LoginContext";
 import { useTheme } from "@contexts/ThemeContext";
 
-import { getLogin } from "@js/api";
-
-const ProfileScreen = (props) => {
+export default ProfileScreen = (props) => {
   useEffect(() => {
     props.navigation.setOptions({ title: "个人信息" });
   }, []);
 
-  const styles = {
-    container: { padding: 10 },
-  };
+  const styles = {};
 
   return (
     <View style={styles.container}>
@@ -27,36 +24,22 @@ const ProfileScreen = (props) => {
   );
 };
 
-export default ProfileScreen;
-
 const ItemLogin = (props) => {
   const [login, setLogin] = useLogin();
-  const navigation = props.navigation;
 
   const name = login.username ? login.username : "未登录";
   const phone = login.username ? `电话: ${login.phone}` : null;
   const icon = login.username ? "account" : "help";
 
-  useEffect(async () => {
-    setLogin(await getLogin());
-  }, []);
-
-  const styles = {
-    container: {
-      justifyContent: "center",
-      alignItems: "center",
-    },
-  };
-
   const onPress = () => {
-    if (login.username) navigation.push("Login", { screen: "UserScreen" });
-    else navigation.push("Login", { screen: "LoginScreen" });
+    if (login.username) navigation.navigate("Login", { screen: "UserScreen" });
+    else navigation.navigate("Login", { screen: "LoginScreen" });
   };
 
   return (
     <Item onPress={onPress}>
       <Icon name={icon} />
-      <View style={styles.container}>
+      <View>
         <NameLabel>{name}</NameLabel>
         <PhoneLabel>{phone}</PhoneLabel>
       </View>
@@ -77,9 +60,9 @@ const PhoneLabel = (props) => {
 const Icon = (props) => {
   const styles = {
     container: {
-      width: 40,
-      height: 40,
-      marginRight: 20,
+      width: 60,
+      height: 60,
+      marginRight: 14,
 
       alignItems: "center",
       justifyContent: "center",
@@ -96,8 +79,12 @@ const Icon = (props) => {
 };
 
 const ItemAbout = (props) => {
+  const onPress = () => {
+    navigation.navigate("AboutScreen");
+  };
+
   return (
-    <Item type="navigation" onPress={() => navigation.push("AboutScreen")}>
+    <Item type="navigation" onPress={onPress}>
       <Label>关于</Label>
     </Item>
   );
@@ -107,10 +94,13 @@ const Item = (props) => {
   const styles = {
     container: {
       padding: 14,
+      paddingHorizontal: 24,
       flexDirection: "row",
       alignItems: "center",
-      borderBottomWidth: 1,
-      borderColor: "lightgrey",
+
+      marginBottom: 2,
+
+      backgroundColor: "white",
     },
   };
 

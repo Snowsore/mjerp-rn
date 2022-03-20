@@ -5,7 +5,7 @@ import { Loading } from "@components";
 
 import { getAnnounces } from "@js/api";
 
-const AnnounceScreen = (props) => {
+export default AnnounceScreen = (props) => {
   useEffect(async () => {
     props.navigation.setOptions({ title: "公告" });
   }, []);
@@ -20,8 +20,6 @@ const AnnounceScreen = (props) => {
     </View>
   );
 };
-
-export default AnnounceScreen;
 
 const Announces = (props) => {
   const [announces, setAnnounces] = useState([]);

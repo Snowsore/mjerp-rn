@@ -24,7 +24,6 @@ export default function ScanScreen({ navigation }) {
   const handleBarCodeScanned = ({ type, data }) => {
     const json = JSON.parse(data);
     navigation.replace("Product", {
-      screen: "InfosScreen",
       params: { pid: json.pid },
     });
   };

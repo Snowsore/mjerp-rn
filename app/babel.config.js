@@ -11,6 +11,7 @@ module.exports = function (api) {
             "@contexts": "./contexts",
             "@js": "./js",
             "@managers": "./managers",
+            "@refs": "./refs",
           },
         },
       ],

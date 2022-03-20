@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Text, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
-import { Label } from "@components";
+import { Label, Loading } from "@components";
 
 import dateFormat from "@js/dateformat";
 import { getProductInfos } from "@js/api";
@@ -10,33 +10,41 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import { useProduct } from "@contexts/ProductContext";
 
-export default function InfosScreen(props) {
+export default InfosScreen = (props) => {
   const [product, setProduct] = useProduct();
 
   useEffect(async () => {
     try {
       const id = props.route.params.pid;
-      setProduct(await getProductInfos(id));
 
-      props.navigation.setOptions({
-        title: `单号：${id}`,
-      });
+      props.navigation.setOptions({ title: `单号：${id}` });
+      setProduct(await getProductInfos(id));
     } catch (err) {
       alert(err.message);
       props.navigation.goBack();
     }
   }, []);
 
-  const productInfoListComps = product.map((info, step) => (
+  return (
+    <View style={styles.container}>
+      <ProductInfoList />
+    </View>
+  );
+};
+
+const ProductInfoList = (props) => {
+  const [product, setProduct] = useProduct();
+
+  if (!product.length) return <Loading />;
+
+  return product.map((info, step) => (
     <MenuInfo
       key={`info_${step}`}
       onPress={() => props.navigation.push("InfoScreen", { step })}
       info={info}
     />
   ));
-
-  return <View style={styles.container}>{productInfoListComps}</View>;
-}
+};
 
 const MenuInfo = (props) => {
   const info = props.info;

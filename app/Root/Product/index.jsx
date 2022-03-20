@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator();
 export default function Product(props) {
   return (
     <ProductProvider>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="InfosScreen">
         <Stack.Screen name="InfoScreen" component={InfoScreen} />
         <Stack.Screen name="InfosScreen" component={InfosScreen} />
       </Stack.Navigator>

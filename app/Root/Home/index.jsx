@@ -17,7 +17,6 @@ export default function Home(props) {
       screenOptions={{
         tabBarActiveTintColor: theme,
       }}
-      sceneContainerStyle={{ backgroundColor: "white" }}
     >
       <Tab.Screen
         name="Welcome"

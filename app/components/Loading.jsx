@@ -1,7 +1,15 @@
-import { ActivityIndicator } from "react-native";
+import { StyleSheet, ActivityIndicator } from "react-native";
 
 const Loading = (props) => {
-  return <ActivityIndicator size="large" color="#E3170A" />;
+  const styles = StyleSheet.create({
+    container: {
+      padding: 40,
+    },
+  });
+
+  return (
+    <ActivityIndicator style={styles.container} size="large" color="#E3170A" />
+  );
 };
 
 export default Loading;

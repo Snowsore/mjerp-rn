@@ -9,6 +9,7 @@ import Picker from "./Picker";
 import Label from "./Label";
 import Modal from "./Modal";
 import Loading from "./Loading";
+import Link from "./Link";
 
 export {
   Button,
@@ -22,4 +23,5 @@ export {
   Label,
   Modal,
   Loading,
+  Link,
 };
