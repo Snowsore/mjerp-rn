@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-import { Group, Frame } from "@/components";
+import { Group, Frame } from "@components";
 
-import { useLogin } from "@/contexts/LoginContext";
+import { useLogin } from "@contexts/LoginContext";
 
 export default function LoginScreen(props) {
   const [login, setLogin] = useLogin();

@@ -1,5 +1,5 @@
-import Index from "./src";
+import Root from "./Root";
 
 export default function App() {
-  return <Index />;
+  return <Root />;
 }

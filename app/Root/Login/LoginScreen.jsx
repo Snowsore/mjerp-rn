@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-import { Button, Input, Field, Flex } from "@/components";
+import { Button, Input, Field, Flex } from "@components";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { useLogin } from "@/contexts/LoginContext";
+import { useLogin } from "@contexts/LoginContext";
 
-import { postLogin } from "@/js/api";
+import { postLogin } from "@js/api";
 
 import { setItemAsync, getItemAsync } from "expo-secure-store";
 

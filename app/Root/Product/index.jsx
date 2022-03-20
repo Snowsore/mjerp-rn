@@ -5,7 +5,7 @@ import InfosScreen from "./InfosScreen";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { ProductProvider } from "@/contexts/ProductContext";
+import { ProductProvider } from "@contexts/ProductContext";
 
 const Stack = createNativeStackNavigator();
 

@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { Label } from "@/components";
+import { Label } from "@components";
 
-import { useLogin } from "@/contexts/LoginContext";
-import { useTheme } from "@/contexts/ThemeContext";
+import { useLogin } from "@contexts/LoginContext";
+import { useTheme } from "@contexts/ThemeContext";
 
-import { getLogin } from "@/js/api";
+import { getLogin } from "@js/api";
 
 const ProfileScreen = (props) => {
   useEffect(() => {

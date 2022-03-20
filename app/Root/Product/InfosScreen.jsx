@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { Text, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
-import { Label } from "@/components";
+import { Label } from "@components";
 
-import dateFormat from "@/js/dateformat";
-import { getProductInfos } from "@/js/api";
+import dateFormat from "@js/dateformat";
+import { getProductInfos } from "@js/api";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { useProduct } from "@/contexts/ProductContext";
+import { useProduct } from "@contexts/ProductContext";
 
 export default function InfosScreen(props) {
   const [product, setProduct] = useProduct();

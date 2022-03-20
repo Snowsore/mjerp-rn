@@ -5,7 +5,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
 
-import { useTheme } from "@/contexts/ThemeContext";
+import { useTheme } from "@contexts/ThemeContext";
 
 export default function Home(props) {
   const [theme, setTheme] = useTheme();

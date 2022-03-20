@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 import { View } from "react-native";
 
-import { Input, Field, Flex, Button } from "@/components";
+import { Input, Field, Flex, Button } from "@components";
 
-import { useLogin } from "@/contexts/LoginContext";
+import { useLogin } from "@contexts/LoginContext";
 
 export default function NameUpdateScreen(props) {
   const [login, setLogin] = useLogin();

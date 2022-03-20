@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Text, View } from "react-native";
 
-import { Loading } from "@/components";
+import { Loading } from "@components";
 
-import { getAnnounces } from "@/js/api";
+import { getAnnounces } from "@js/api";
 
 const AnnounceScreen = (props) => {
   useEffect(async () => {

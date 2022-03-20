@@ -1,15 +1,15 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Product from "./pages/Product";
-import AboutScreen from "./pages/AboutScreen";
-import ScanScreen from "./pages/ScanScreen";
+import Home from "./Home";
+import Login from "./Login";
+import Product from "./Product";
+import AboutScreen from "./AboutScreen";
+import ScanScreen from "./ScanScreen";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { LoginProvider } from "@/contexts/LoginContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { NavigationProvider } from "@/contexts/NavigationContext";
+import { LoginProvider } from "@contexts/LoginContext";
+import { ThemeProvider } from "@contexts/ThemeContext";
+import { NavigationProvider } from "@contexts/NavigationContext";
 
 const Stack = createNativeStackNavigator();
 

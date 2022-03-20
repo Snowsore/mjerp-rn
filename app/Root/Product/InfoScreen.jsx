@@ -1,13 +1,13 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { Text, View, StyleSheet } from "react-native";
 
-import dateFormat from "@/js/dateformat";
+import dateFormat from "@js/dateformat";
 
-import { Group, Button, Modal, Field, Flex, Input } from "@/components";
+import { Group, Button, Modal, Field, Flex, Input } from "@components";
 
-import { useProduct } from "@/contexts/ProductContext";
+import { useProduct } from "@contexts/ProductContext";
 
-import { getProductInfos, postProductInfo } from "@/js/api";
+import { getProductInfos, postProductInfo } from "@js/api";
 
 const InfoContext = createContext();
 
