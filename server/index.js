@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
 
-const cors = require("cors");
-
 const session = require("express-session");
 
 const colors = require("colors");
@@ -108,6 +106,14 @@ const isLogin = (req, res, next) => {
   if (req.session.login) next();
   else res.status(403).end();
 };
+
+app.use(async () => {
+  const wait = (ms) => {
+    return new Promise((resolve) => setTimeout(() => resolve(), ms));
+  };
+
+  await wait(1000);
+});
 
 app.use(express.json());
 
