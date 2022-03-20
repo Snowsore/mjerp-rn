@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { navigation } from "@refs/RootNavigation";
+import { navigation } from "@refs/NavigationRef";
 
 import Home from "./Home";
 import Login from "./Login";

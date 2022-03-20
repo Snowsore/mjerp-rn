@@ -10,6 +10,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import { useProduct } from "@contexts/ProductContext";
 
+import { navigation } from "@refs/NavigationRef";
+
 export default InfosScreen = (props) => {
   const [product, setProduct] = useProduct();
 
@@ -37,13 +39,13 @@ const ProductInfoList = (props) => {
 
   if (!product.length) return <Loading />;
 
-  return product.map((info, step) => (
-    <MenuInfo
-      key={`info_${step}`}
-      onPress={() => props.navigation.push("InfoScreen", { step })}
-      info={info}
-    />
-  ));
+  return product.map((info, step) => {
+    const onPress = () => {
+      navigation.navigate("InfoScreen", { step });
+    };
+
+    return <MenuInfo key={`info_${step}`} onPress={onPress} info={info} />;
+  });
 };
 
 const MenuInfo = (props) => {

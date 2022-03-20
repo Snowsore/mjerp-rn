@@ -1,4 +1,4 @@
-// RootNavigation.js
+// NavigationRef.js
 
 import { createNavigationContainerRef } from "@react-navigation/native";
 

@@ -1,6 +1,6 @@
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
-import { navigation } from "@refs/RootNavigation";
+import { navigation } from "@refs/NavigationRef";
 
 const Link = (props) => {
   const styles = StyleSheet.create({

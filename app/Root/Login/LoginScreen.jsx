@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
 
-import { navigation } from "@refs/RootNavigation";
+import { navigation } from "@refs/NavigationRef";
 
 import { Button, Input, Field, Flex, Link, Label, Loading } from "@components";
 

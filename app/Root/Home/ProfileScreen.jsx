@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import { createNavigationContainerRef } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { navigation } from "@refs/RootNavigation";
+import { navigation } from "@refs/NavigationRef";
 
 import { Label } from "@components";
 
