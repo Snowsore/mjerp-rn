@@ -31,15 +31,6 @@ export default function AnnounceScreen(props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { padding: 20 },
-  announce: {
-    marginBottom: 20,
-  },
-  title: { fontSize: 30, fontWeight: "bold" },
-  context: { fontSize: 20 },
-});
-
 const Announce = (props) => {
   return (
     <View style={styles.announce}>
@@ -48,3 +39,10 @@ const Announce = (props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { padding: 20 },
+  announce: { marginBottom: 20 },
+  title: { fontSize: 30, fontWeight: "bold" },
+  context: { fontSize: 20 },
+});
