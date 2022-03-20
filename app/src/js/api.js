@@ -4,7 +4,7 @@ const axios = require("axios");
 
 const send = (() => {
   const req = axios.create({
-    baseURL: "http://39.99.52.246:4000",
+    baseURL: "http://192.168.2.10:8080",
   });
 
   const errorHandler = (err) => {

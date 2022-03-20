@@ -107,14 +107,6 @@ const isLogin = (req, res, next) => {
   else res.status(403).end();
 };
 
-app.use(async () => {
-  const wait = (ms) => {
-    return new Promise((resolve) => setTimeout(() => resolve(), ms));
-  };
-
-  await wait(1000);
-});
-
 app.use(express.json());
 
 app.use(
@@ -127,6 +119,15 @@ app.use(
     },
   })
 );
+
+app.use(async (req, res, next) => {
+  const wait = (ms) => {
+    return new Promise((resolve) => setTimeout(() => resolve(), ms));
+  };
+
+  await wait(1000);
+  next();
+});
 
 app.use((req, res, next) => {
   const method = colors[req.method](req.method.padEnd(4, " "));

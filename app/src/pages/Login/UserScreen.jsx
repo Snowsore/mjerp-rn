@@ -10,7 +10,7 @@ export default function LoginScreen(props) {
   const { uid, username, phone } = login;
 
   useEffect(() => {
-    console.log("Go");
+    // console.log("Go");
   }, []);
 
   return (

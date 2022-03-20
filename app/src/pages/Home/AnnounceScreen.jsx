@@ -5,6 +5,10 @@ import { getAnnounce, getLogin } from "@/js/api";
 
 import { useLogin } from "@/contexts/LoginContext";
 
+const styles = StyleSheet.create({
+  container: { padding: 20 },
+});
+
 export default function AnnounceScreen(props) {
   const [login, setLogin] = useLogin();
 
@@ -12,10 +16,6 @@ export default function AnnounceScreen(props) {
 
   useEffect(async () => {
     props.navigation.setOptions({ title: "公告页面" });
-
-    try {
-      setLogin(await getLogin());
-    } catch (err) {}
 
     try {
       setAnnounce(await getAnnounce());
@@ -31,7 +31,14 @@ export default function AnnounceScreen(props) {
   );
 }
 
+const announceStyles = StyleSheet.create({
+  announceContainer: { marginBottom: 20 },
+  title: { fontSize: 30, fontWeight: "bold" },
+  context: { fontSize: 20 },
+});
+
 const Announce = (props) => {
+  const styles = announceStyles;
   return (
     <View style={styles.announce}>
       <Text style={styles.title}>{props.title}</Text>
@@ -39,10 +46,3 @@ const Announce = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { padding: 20 },
-  announce: { marginBottom: 20 },
-  title: { fontSize: 30, fontWeight: "bold" },
-  context: { fontSize: 20 },
-});

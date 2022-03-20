@@ -6,7 +6,7 @@ import { View } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
 
-import api from "@/js/api";
+// import api from "@/js/api";
 
 export default function Input(props) {
   const [optionList, setOptionList] = useState([]);

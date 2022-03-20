@@ -1,7 +1,5 @@
-import React from "react";
-
-import Main from "./src/Main";
+import Index from "./src";
 
 export default function App() {
-  return <Main />;
+  return <Index />;
 }
