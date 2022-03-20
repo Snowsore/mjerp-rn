@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
-import { Button, Input, Field, Flex } from "@/components/mj";
+import { Button, Input, Field, Flex } from "@/components";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 

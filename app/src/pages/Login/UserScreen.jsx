@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Group, Frame } from "@/components/mj";
+import { Group, Frame } from "@/components";
 
 import { useLogin } from "@/contexts/LoginContext";
 

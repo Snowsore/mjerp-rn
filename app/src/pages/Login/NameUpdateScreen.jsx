@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { View } from "react-native";
 
-import { Input, Field, Flex, Button } from "@/components/mj";
+import { Input, Field, Flex, Button } from "@/components";
 
 import { useLogin } from "@/contexts/LoginContext";
 

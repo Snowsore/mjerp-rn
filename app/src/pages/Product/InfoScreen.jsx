@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 
 import dateFormat from "@/js/dateformat";
 
-import { Group, Button, Modal, Field, Flex, Input } from "@/components/mj";
+import { Group, Button, Modal, Field, Flex, Input } from "@/components";
 
 import { useProduct } from "@/contexts/ProductContext";
 

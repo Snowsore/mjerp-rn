@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Text, View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 
-import { Label } from "@/components/mj";
+import { Label } from "@/components";
 
 import dateFormat from "@/js/dateformat";
 import { getProductInfos } from "@/js/api";

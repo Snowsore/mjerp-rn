@@ -19,6 +19,7 @@ export default function Home(props) {
         name="Welcome"
         component={AnnounceScreen}
         options={{
+          tabBarLabel: "首页",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
@@ -49,6 +50,7 @@ export default function Home(props) {
         name="Profile"
         component={ProfileScreen}
         options={{
+          tabBarLabel: "个人",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),

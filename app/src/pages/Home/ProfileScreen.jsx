@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { Label } from "@/components/mj";
+import { Label } from "@/components";
 
 import { useLogin } from "@/contexts/LoginContext";
 
@@ -13,7 +13,7 @@ export default function ProfileScreen(props) {
 
   const icon = login.username ? "account" : "help";
   const name = login.username ? login.username : "未登录";
-  const phone = login.username ? `电话: ${login.phone}` : "点击查看登录信息";
+  const phone = login.username ? `电话: ${login.phone}` : null;
 
   const onPress = () => {
     if (login.username) navigation.push("Login", { screen: "UserScreen" });
@@ -21,40 +21,41 @@ export default function ProfileScreen(props) {
   };
 
   useEffect(() => {
-    props.navigation.setOptions({ title: "个人页面" });
+    props.navigation.setOptions({ title: "个人信息" });
   }, []);
 
-  return (
-    <View style={styles.container}>
+  const itemLogin = () => {
+    const nameComp = () => <Label size="xl">{name}</Label>;
+    const phoneComp = () => {
+      if (phone) <Label>{phone}</Label>;
+    };
+
+    return (
       <Item onPress={onPress}>
         <Icon name={icon} />
-        <View>
-          <Label size="xl">{name}</Label>
-          <Label>{phone}</Label>
+        <View style={styles.loginContainer}>
+          {nameComp()}
+          {phoneComp()}
         </View>
       </Item>
+    );
+  };
+
+  const itemAbout = () => {
+    return (
       <Item type="navigation" onPress={() => navigation.push("AboutScreen")}>
         <Label>关于</Label>
       </Item>
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      {itemLogin()}
+      {itemAbout()}
     </View>
   );
 }
-
-const Item = (props) => {
-  return (
-    <TouchableWithoutFeedback onPress={props.onPress}>
-      <View style={styles.stackContainer}>{props.children}</View>
-    </TouchableWithoutFeedback>
-  );
-};
-
-const Icon = (props) => {
-  return (
-    <View style={styles.icon}>
-      <MaterialCommunityIcons name={props.name} size={30} />
-    </View>
-  );
-};
 
 const styles = StyleSheet.create({
   container: { padding: 10 },
@@ -75,4 +76,24 @@ const styles = StyleSheet.create({
     borderRadius: 2000,
     borderWidth: 1,
   },
+  loginContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
+
+const Item = (props) => {
+  return (
+    <TouchableWithoutFeedback onPress={props.onPress}>
+      <View style={styles.stackContainer}>{props.children}</View>
+    </TouchableWithoutFeedback>
+  );
+};
+
+const Icon = (props) => {
+  return (
+    <View style={styles.icon}>
+      <MaterialCommunityIcons name={props.name} size={30} />
+    </View>
+  );
+};

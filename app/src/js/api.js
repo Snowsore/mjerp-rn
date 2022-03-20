@@ -28,8 +28,8 @@ const send = (() => {
   return { get, post };
 })();
 
-export const getAnnounce = async () => {
-  const { data } = await send.get("/announce");
+export const getAnnounces = async () => {
+  const { data } = await send.get("/announces");
   return data;
 };
 

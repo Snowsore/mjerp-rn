@@ -139,11 +139,13 @@ app.get("/", (req, res) => {
   res.json({ msg: "Welcome MeiJinERP server" });
 });
 
-app.get("/announce", (req, res) => {
-  res.json({
-    title: "欢迎使用美进ERP系统",
-    context: "目前为内侧阶段",
-  });
+app.get("/announces", (req, res) => {
+  res.json([
+    {
+      title: "欢迎使用美进ERP系统",
+      context: "目前为内侧阶段",
+    },
+  ]);
 });
 
 app.get("/login", isLogin, (req, res) => {
