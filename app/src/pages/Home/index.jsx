@@ -5,13 +5,17 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
 
+import { useTheme } from "@/contexts/ThemeContext";
+
 export default function Home(props) {
+  const [theme, setTheme] = useTheme();
+
   return (
     <Tab.Navigator
       backBehavior="none"
       initialRouteName="Welcome"
       screenOptions={{
-        tabBarActiveTintColor: "#E3170A",
+        tabBarActiveTintColor: theme,
       }}
       sceneContainerStyle={{ backgroundColor: "white" }}
     >

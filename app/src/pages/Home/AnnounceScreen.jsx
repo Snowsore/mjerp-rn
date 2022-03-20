@@ -1,24 +1,32 @@
 import { useState, useEffect } from "react";
-import {
-  ActivityIndicator,
-  Text,
-  View,
-  ScrollView,
-  StyleSheet,
-} from "react-native";
+import { Text, View } from "react-native";
 
-import { getAnnounces, getLogin } from "@/js/api";
+import { Loading } from "@/components";
 
-import { useLogin } from "@/contexts/LoginContext";
+import { getAnnounces } from "@/js/api";
 
-export default function AnnounceScreen(props) {
-  const [login, setLogin] = useLogin();
+const AnnounceScreen = (props) => {
+  useEffect(async () => {
+    props.navigation.setOptions({ title: "公告" });
+  }, []);
 
+  const styles = {
+    container: { padding: 20 },
+  };
+
+  return (
+    <View style={styles.container}>
+      <Announces />
+    </View>
+  );
+};
+
+export default AnnounceScreen;
+
+const Announces = (props) => {
   const [announces, setAnnounces] = useState([]);
 
   useEffect(async () => {
-    props.navigation.setOptions({ title: "公告" });
-
     try {
       setAnnounces(await getAnnounces());
     } catch (err) {
@@ -26,26 +34,22 @@ export default function AnnounceScreen(props) {
     }
   }, []);
 
-  const announceComp = () => {
-    if (announces.length) {
-      return announces.map((announce, index) => (
-        <Announce key={`announce_${index}`} title={announce.title}>
-          {announce.context}
-        </Announce>
-      ));
-    }
-    return <ActivityIndicator size="large" color="#E3170A" />;
-  };
+  if (!announces.length) return <Loading />;
 
-  return <ScrollView style={styles.container}>{announceComp()}</ScrollView>;
-}
-
-const styles = StyleSheet.create({
-  container: { padding: 20 },
-});
+  return announces.map((announce, index) => (
+    <Announce key={`announce_${index}`} title={announce.title}>
+      {announce.context}
+    </Announce>
+  ));
+};
 
 const Announce = (props) => {
-  const styles = announceStyles;
+  const styles = {
+    announceContainer: { marginBottom: 20 },
+    title: { fontSize: 30, fontWeight: "bold" },
+    context: { fontSize: 20 },
+  };
+
   return (
     <View style={styles.announce}>
       <Text style={styles.title}>{props.title}</Text>
@@ -53,9 +57,3 @@ const Announce = (props) => {
     </View>
   );
 };
-
-const announceStyles = StyleSheet.create({
-  announceContainer: { marginBottom: 20 },
-  title: { fontSize: 30, fontWeight: "bold" },
-  context: { fontSize: 20 },
-});

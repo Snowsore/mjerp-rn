@@ -1,99 +1,122 @@
 import { useEffect } from "react";
 
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { View, TouchableWithoutFeedback } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { Label } from "@/components";
 
 import { useLogin } from "@/contexts/LoginContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
-export default function ProfileScreen(props) {
+import { getLogin } from "@/js/api";
+
+const ProfileScreen = (props) => {
+  useEffect(() => {
+    props.navigation.setOptions({ title: "个人信息" });
+  }, []);
+
+  const styles = {
+    container: { padding: 10 },
+  };
+
+  return (
+    <View style={styles.container}>
+      <ItemLogin />
+      <ItemAbout />
+    </View>
+  );
+};
+
+export default ProfileScreen;
+
+const ItemLogin = (props) => {
   const [login, setLogin] = useLogin();
   const navigation = props.navigation;
 
-  const icon = login.username ? "account" : "help";
   const name = login.username ? login.username : "未登录";
   const phone = login.username ? `电话: ${login.phone}` : null;
+  const icon = login.username ? "account" : "help";
+
+  useEffect(async () => {
+    setLogin(await getLogin());
+  }, []);
+
+  const styles = {
+    container: {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  };
 
   const onPress = () => {
     if (login.username) navigation.push("Login", { screen: "UserScreen" });
     else navigation.push("Login", { screen: "LoginScreen" });
   };
 
-  useEffect(() => {
-    props.navigation.setOptions({ title: "个人信息" });
-  }, []);
+  return (
+    <Item onPress={onPress}>
+      <Icon name={icon} />
+      <View style={styles.container}>
+        <NameLabel>{name}</NameLabel>
+        <PhoneLabel>{phone}</PhoneLabel>
+      </View>
+    </Item>
+  );
+};
 
-  const itemLogin = () => {
-    const nameComp = () => <Label size="xl">{name}</Label>;
-    const phoneComp = () => {
-      if (phone) <Label>{phone}</Label>;
-    };
+const NameLabel = (props) => {
+  if (props.children) <Label size="xl">未登录</Label>;
+  return <Label size="xl">{props.children}</Label>;
+};
 
-    return (
-      <Item onPress={onPress}>
-        <Icon name={icon} />
-        <View style={styles.loginContainer}>
-          {nameComp()}
-          {phoneComp()}
-        </View>
-      </Item>
-    );
-  };
+const PhoneLabel = (props) => {
+  if (!props.children) return null;
+  return <Label>{props.children}</Label>;
+};
 
-  const itemAbout = () => {
-    return (
-      <Item type="navigation" onPress={() => navigation.push("AboutScreen")}>
-        <Label>关于</Label>
-      </Item>
-    );
+const Icon = (props) => {
+  const styles = {
+    container: {
+      width: 40,
+      height: 40,
+      marginRight: 20,
+
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 40,
+      borderWidth: 1,
+    },
   };
 
   return (
     <View style={styles.container}>
-      {itemLogin()}
-      {itemAbout()}
+      <MaterialCommunityIcons name={props.name} size={30} />
     </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: { padding: 10 },
-  stackContainer: {
-    padding: 14,
-    flexDirection: "row",
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderColor: "lightgrey",
-  },
-  icon: {
-    width: 40,
-    height: 40,
-    marginRight: 20,
-
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 2000,
-    borderWidth: 1,
-  },
-  loginContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
-
-const Item = (props) => {
-  return (
-    <TouchableWithoutFeedback onPress={props.onPress}>
-      <View style={styles.stackContainer}>{props.children}</View>
-    </TouchableWithoutFeedback>
   );
 };
 
-const Icon = (props) => {
+const ItemAbout = (props) => {
   return (
-    <View style={styles.icon}>
-      <MaterialCommunityIcons name={props.name} size={30} />
-    </View>
+    <Item type="navigation" onPress={() => navigation.push("AboutScreen")}>
+      <Label>关于</Label>
+    </Item>
+  );
+};
+
+const Item = (props) => {
+  const styles = {
+    container: {
+      padding: 14,
+      flexDirection: "row",
+      alignItems: "center",
+      borderBottomWidth: 1,
+      borderColor: "lightgrey",
+    },
+  };
+
+  return (
+    <TouchableWithoutFeedback onPress={props.onPress}>
+      <View style={styles.container}>{props.children}</View>
+    </TouchableWithoutFeedback>
   );
 };

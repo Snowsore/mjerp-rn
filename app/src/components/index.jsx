@@ -8,6 +8,7 @@ import Ifdiv from "./Ifdiv";
 import Picker from "./Picker";
 import Label from "./Label";
 import Modal from "./Modal";
+import Loading from "./Loading";
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   Picker,
   Label,
   Modal,
+  Loading,
 };
