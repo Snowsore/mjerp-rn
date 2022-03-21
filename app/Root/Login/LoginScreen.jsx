@@ -42,10 +42,9 @@ const Card = (props) => {
     try {
       setLogin(await getLogin());
 
-      // Test
-      navigation.navigate("Product", {
-        screen: "InfosScreen",
-        params: { pid: "2201153101" },
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
       });
     } catch (err) {
       console.log(err);
@@ -114,7 +113,11 @@ const LoginForm = () => {
       const user = await postLogin({ phone, password });
       setLogin(user);
       await secureStore.save();
-      navigation.navigate("Home");
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      });
     } catch (err) {
       alert(err.message);
     }
