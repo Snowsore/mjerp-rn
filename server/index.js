@@ -2,6 +2,18 @@ const express = require("express");
 const app = express();
 
 const session = require("express-session");
+const multer = require("multer");
+
+const fs = require("fs");
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: "uploads/",
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+  }),
+});
 
 const colors = require("colors");
 
@@ -120,14 +132,26 @@ app.use(
   })
 );
 
-app.use(async (req, res, next) => {
-  const wait = (ms) => {
-    return new Promise((resolve) => setTimeout(() => resolve(), ms));
-  };
+app.use("/public", express.static("public"));
 
-  await wait(1000);
-  next();
+app.get("/uploads", (req, res) => {
+  res.json(fs.readdirSync("uploads"));
 });
+
+app.post("/uploads", upload.single("upload"), (req, res) => {
+  res.redirect("/public");
+});
+
+app.use("/uploads", express.static("uploads"));
+
+// app.use(async (req, res, next) => {
+//   const wait = (ms) => {
+//     return new Promise((resolve) => setTimeout(() => resolve(), ms));
+//   };
+
+//   await wait(1000);
+//   next();
+// });
 
 app.use((req, res, next) => {
   const method = colors[req.method](req.method.padEnd(4, " "));

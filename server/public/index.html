@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .box {
+        width: 600px;
+        border: 10px solid black;
+        border-radius: 30px;
+
+        display: flex;
+        flex-direction: column;
+
+        padding: 40px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <form method="POST" action="/uploads" enctype="multipart/form-data">
+        <input name="upload" type="file" /><button type="submit">Submit</button>
+      </form>
+      <div>
+        <ul id="fileList"></ul>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    (async () => {
+      const res = await fetch("/uploads");
+      const json = await res.json();
+
+      console.log(json);
+
+      document.getElementById("fileList").innerHTML = json
+        .map((file) => `<li><a href="/uploads/${file}">${file}<a></li>`)
+        .join("");
+    })();
+  </script>
+</html>
